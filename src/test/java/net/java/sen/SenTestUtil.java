@@ -50,7 +50,7 @@ public class SenTestUtil {
     /**
      * IPADIC dictionary directory path
      */
-    public static final String IPADIC_DIR = "./dictionary/ipadic";
+    public static final String IPADIC_DIR = "dictionary/ipadic";
 
     /**
      * Returns a StringTagger for testing

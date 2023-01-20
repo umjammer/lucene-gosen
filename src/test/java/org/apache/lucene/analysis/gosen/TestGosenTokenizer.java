@@ -1,5 +1,3 @@
-package org.apache.lucene.analysis.gosen;
-
 /*
  * Copyright 2004 The Apache Software Foundation
  *
@@ -16,23 +14,31 @@ package org.apache.lucene.analysis.gosen;
  * limitations under the License.
  */
 
+package org.apache.lucene.analysis.gosen;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Arrays;
+import java.util.Random;
 
+import com.carrotsearch.randomizedtesting.RandomizedContext;
 import net.java.sen.SenTestUtil;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.BaseTokenStreamTestCase;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.util.TestUtil;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 
 
 /**
  * Tests for {@link GosenTokenizer}
  */
+@RunWith(com.carrotsearch.randomizedtesting.RandomizedRunner.class)
 public class TestGosenTokenizer extends BaseTokenStreamTestCase {
+
     private Analyzer analyzer = new Analyzer() {
         @Override
         protected TokenStreamComponents createComponents(String field) {
@@ -40,6 +46,13 @@ public class TestGosenTokenizer extends BaseTokenStreamTestCase {
             return new TokenStreamComponents(tokenizer, tokenizer);
         }
     };
+
+    static Random random;
+
+    @BeforeClass
+    public static void setUpBeforeClass() {
+        random = random();
+    }
 
     @Test
     void testDecomposition1() throws IOException {
@@ -125,13 +138,13 @@ public class TestGosenTokenizer extends BaseTokenStreamTestCase {
      */
     @Test
     void testReliability() throws IOException {
-        checkRandomData(random(), analyzer, 10000);
+        checkRandomData(random, analyzer, 10000);
     }
 
     @Test
     void testLargeDocReliability() throws IOException {
         for (int i = 0; i < 100; i++) {
-            String s = TestUtil.randomUnicodeString(random(), 10000);
+            String s = TestUtil.randomUnicodeString(RandomizedContext.current().getRandom(), 10000);
             TokenStream ts = analyzer.tokenStream("foo", new StringReader(s));
             ts.reset();
             while (ts.incrementToken()) {

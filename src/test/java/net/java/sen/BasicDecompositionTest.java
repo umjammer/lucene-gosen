@@ -40,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Tests basic string analysis
  */
 public class BasicDecompositionTest {
+
     /**
      * Tests string decomposition
      *
@@ -124,7 +125,7 @@ public class BasicDecompositionTest {
 
         StringTagger tagger = getStringTagger();
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -222,7 +223,7 @@ public class BasicDecompositionTest {
     void testDifferentDictionary01() throws IOException {
         String testString = "これは本ではない";
         String ipadicDir = SenTestUtil.IPADIC_DIR;
-        String naistChasenDir = "./dictionary/naist-chasen";
+        String naistChasenDir = "dictionary/naist-chasen";
 
         Token[] expectedIpadicTokens = new Token[] {
                 new Token("これ", 1848, 0, 2, new Morpheme("名詞-代名詞-一般", "*", "*", "*", new String[] {"コレ"}, new String[] {"コレ"}, null)),
@@ -267,7 +268,7 @@ public class BasicDecompositionTest {
             SenFactory.getStringTagger(null);
             fail("Error! getStringTagger was created.");
         } catch (RuntimeException t) {
-            assertEquals("Exception message not expected.", "Not found resource[header.sen]. dictionaryDir=[null]", t.getMessage());
+            assertEquals("Not found resource[header.sen]. dictionaryDir=[null]", t.getMessage(), "Exception message not expected.");
         } catch (Throwable t) {
             fail("Not expected exception. " + t.getClass().getName());
         }
@@ -276,11 +277,10 @@ public class BasicDecompositionTest {
             SenFactory.getStringTagger("");
             fail("Error! getStringTagger was created.");
         } catch (RuntimeException t) {
-            assertEquals("Exception message not expected.", "Not found resource[header.sen]. dictionaryDir=[]", t.getMessage());
+            assertEquals("Not found resource[header.sen]. dictionaryDir=[]", t.getMessage(), "Exception message not expected.");
         } catch (Throwable t) {
             fail("Not expected exception. " + t.getClass().getName());
         }
-
     }
 
     /**

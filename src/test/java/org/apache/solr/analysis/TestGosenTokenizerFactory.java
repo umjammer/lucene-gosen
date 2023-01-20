@@ -18,26 +18,23 @@ package org.apache.solr.analysis;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.lucene.util.LuceneTestCase;
 import org.apache.solr.core.SolrResourceLoader;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 
-public class TestGosenTokenizerFactory {
+@RunWith(com.carrotsearch.randomizedtesting.RandomizedRunner.class)
+public class TestGosenTokenizerFactory extends LuceneTestCase {
 
     private File baseDir;
     private File confDir;
     private File dicDir;
 
-    @BeforeEach
+    @Override
     public void setUp() throws Exception {
         File testRoot = new File(System.getProperty("java.io.tmpdir")).getCanonicalFile();
         baseDir = new File(testRoot, "core-test");
@@ -48,7 +45,7 @@ public class TestGosenTokenizerFactory {
         dicDir.mkdir();
     }
 
-    @AfterEach
+    @Override
     public void tearDown() throws Exception {
         dicDir.delete();
         confDir.delete();
@@ -70,19 +67,19 @@ public class TestGosenTokenizerFactory {
         args.put("dictionaryDir", dicDir.getName());
         factory = new GosenTokenizerFactory(args);
         factory.inform(loader);
-        assertEquals(dicDir.getAbsolutePath(), field.get(factory), "dictionaryDir is incorrect.");
+        assertEquals("dictionaryDir is incorrect.", dicDir.getAbsolutePath(), field.get(factory));
 
         // absolute path
         args.put("dictionaryDir", dicDir.getAbsolutePath());
         factory = new GosenTokenizerFactory(args);
         factory.inform(loader);
-        assertEquals(dicDir.getAbsolutePath(), field.get(factory), "dictionaryDir is incorrect.");
+        assertEquals("dictionaryDir is incorrect.", dicDir.getAbsolutePath(), field.get(factory));
 
         // not exists path
         String notExistsPath = dicDir.getAbsolutePath() + "/hogehoge";
         args.put("dictionaryDir", notExistsPath);
         factory = new GosenTokenizerFactory(args);
         factory.inform(loader);
-        assertEquals(notExistsPath, field.get(factory), "dictionaryDir is incorrect.");
+        assertEquals("dictionaryDir is incorrect.", notExistsPath, field.get(factory));
     }
 }

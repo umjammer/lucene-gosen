@@ -19,11 +19,13 @@ package org.apache.lucene.analysis.gosen;
 
 import java.io.IOException;
 
+import com.carrotsearch.randomizedtesting.RandomizedContext;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.BaseTokenStreamTestCase;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.core.WhitespaceTokenizer;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 
 
 /**
@@ -44,8 +46,7 @@ public class TestGosenWidthFilter extends BaseTokenStreamTestCase {
      */
     @Test
     void testFullWidthASCII() throws IOException {
-        assertAnalyzesTo(analyzer, "Ｔｅｓｔ １２３４",
-                new String[] {"Test", "1234"});
+        assertAnalyzesTo(analyzer, "Ｔｅｓｔ １２３４", new String[] {"Test", "1234"});
     }
 
     /**
@@ -55,16 +56,13 @@ public class TestGosenWidthFilter extends BaseTokenStreamTestCase {
      */
     @Test
     void testHalfWidthKana() throws IOException {
-        assertAnalyzesTo(analyzer, "ｶﾀｶﾅ",
-                new String[] {"カタカナ"});
-        assertAnalyzesTo(analyzer, "ｳﾞｨｯﾂ",
-                new String[] {"ヴィッツ"});
-        assertAnalyzesTo(analyzer, "ﾊﾟﾅｿﾆｯｸ",
-                new String[] {"パナソニック"});
+        assertAnalyzesTo(analyzer, "ｶﾀｶﾅ", new String[] {"カタカナ"});
+        assertAnalyzesTo(analyzer, "ｳﾞｨｯﾂ", new String[] {"ヴィッツ"});
+        assertAnalyzesTo(analyzer, "ﾊﾟﾅｿﾆｯｸ", new String[] {"パナソニック"});
     }
 
     @Test
     void testRandomData() throws IOException {
-        checkRandomData(random(), analyzer, 10000);
+        checkRandomData(RandomizedContext.current().getRandom(), analyzer, 10000);
     }
 }

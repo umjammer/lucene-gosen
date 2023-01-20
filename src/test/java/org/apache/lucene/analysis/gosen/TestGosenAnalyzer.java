@@ -1,5 +1,3 @@
-package org.apache.lucene.analysis.gosen;
-
 /*
  * Copyright 2004 The Apache Software Foundation
  *
@@ -16,23 +14,29 @@ package org.apache.lucene.analysis.gosen;
  * limitations under the License.
  */
 
+package org.apache.lucene.analysis.gosen;
+
 import java.io.IOException;
 
+import com.carrotsearch.randomizedtesting.RandomizedContext;
 import net.java.sen.SenTestUtil;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.BaseTokenStreamTestCase;
-import org.apache.lucene.util.Version;
-import org.junit.jupiter.api.BeforeEach;
+import org.apache.lucene.analysis.gosen.GosenAnalyzer;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 
 
 /**
  * Simple tests for {@link GosenAnalyzer}
  */
+@RunWith(com.carrotsearch.randomizedtesting.RandomizedRunner.class)
 public class TestGosenAnalyzer extends BaseTokenStreamTestCase {
 
-    /** This test fails with NPE when the
-     * stopwords file is missing in classpath */
+    /**
+     * This test fails with NPE when the
+     * stopwords file is missing in classpath
+     */
     @Test
     void testResourcesAvailable() {
         new GosenAnalyzer(SenTestUtil.IPADIC_DIR);
@@ -60,6 +64,6 @@ public class TestGosenAnalyzer extends BaseTokenStreamTestCase {
     @Test
     void testReliability() throws IOException {
         Analyzer analyzer = new GosenAnalyzer(SenTestUtil.IPADIC_DIR);
-        checkRandomData(random(), analyzer, 10000);
+        checkRandomData(RandomizedContext.current().getRandom(), analyzer, 10000);
     }
 }

@@ -107,7 +107,7 @@ public class SentenceTest {
             assertEquals(expectedSpans[i].skipped, iterator.skippedCharCount(), "Unexpected skip count:");
             Reading reading = sentence.getReadingConstraint(iterator.origin());
             String constraintReading = (reading == null) ? null : reading.text;
-            assertEquals("Unexpected reading constraint:", expectedSpans[i].readingConstraint, constraintReading);
+            assertEquals(expectedSpans[i].readingConstraint, constraintReading, "Unexpected reading constraint:");
 
             for (int j = 0; j < subString.length(); j++) {
                 assertTrue(iterator.hasNext(), "Expected more characters at span " + i + " (\"" + subString + "\")");

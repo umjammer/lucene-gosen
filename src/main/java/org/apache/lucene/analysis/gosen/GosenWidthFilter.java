@@ -35,11 +35,9 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
  * for full normalization.
  */
 public final class GosenWidthFilter extends TokenFilter {
-// this implementation is from the LUCENE-2911 patch.
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
+    // this implementation is from the LUCENE-2911 patch.
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -48,9 +46,6 @@ public final class GosenWidthFilter extends TokenFilter {
         return result;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -90,6 +85,7 @@ public final class GosenWidthFilter extends TokenFilter {
         super(input);
     }
 
+    @Override
     public boolean incrementToken() throws IOException {
         if (input.incrementToken()) {
             char text[] = termAtt.buffer();

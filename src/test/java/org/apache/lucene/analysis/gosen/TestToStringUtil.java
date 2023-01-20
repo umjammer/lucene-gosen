@@ -1,5 +1,3 @@
-package org.apache.lucene.analysis.gosen;
-
 /*
  * Copyright 2004 The Apache Software Foundation
  *
@@ -16,20 +14,21 @@ package org.apache.lucene.analysis.gosen;
  * limitations under the License.
  */
 
-import org.junit.jupiter.api.Test;
+package org.apache.lucene.analysis.gosen;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.apache.lucene.util.LuceneTestCase;
+import org.junit.Test;
 
 
-public class TestToStringUtil {
+public class TestToStringUtil extends LuceneTestCase {
 
     @Test
-    void testPOS() {
+    public void testPOS() {
         assertEquals("noun-suffix-verbal", ToStringUtil.getPOSTranslation("名詞-接尾-サ変接続"));
     }
 
     @Test
-    void testHepburn() {
+    public void testHepburn() {
         assertEquals("majan", ToStringUtil.getRomanization("マージャン"));
         assertEquals("uroncha", ToStringUtil.getRomanization("ウーロンチャ"));
         assertEquals("chahan", ToStringUtil.getRomanization("チャーハン"));

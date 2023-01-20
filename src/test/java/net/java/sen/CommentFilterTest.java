@@ -38,6 +38,7 @@ import static net.java.sen.SenTestUtil.getStringTagger;
  * Test comment filter
  */
 public class CommentFilterTest {
+
     /**
      * HTML removal
      *

@@ -1,15 +1,3 @@
-package org.apache.lucene.analysis.gosen;
-
-import java.io.IOException;
-
-import net.java.sen.SenTestUtil;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.BaseTokenStreamTestCase;
-import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.Tokenizer;
-import org.junit.jupiter.api.Test;
-
-
 /*
  * Copyright 2004 The Apache Software Foundation
  *
@@ -25,6 +13,19 @@ import org.junit.jupiter.api.Test;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package org.apache.lucene.analysis.gosen;
+
+import java.io.IOException;
+
+import com.carrotsearch.randomizedtesting.RandomizedContext;
+import net.java.sen.SenTestUtil;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.BaseTokenStreamTestCase;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.Tokenizer;
+import org.junit.jupiter.api.Test;
+
 
 public class TestGosenBasicFormFilter extends BaseTokenStreamTestCase {
     private Analyzer analyzer = new Analyzer() {
@@ -45,6 +46,6 @@ public class TestGosenBasicFormFilter extends BaseTokenStreamTestCase {
 
     @Test
     void testRandomStrings() throws IOException {
-        checkRandomData(random(), analyzer, 10000);
+        checkRandomData(RandomizedContext.current().getRandom(), analyzer, 10000);
     }
 }

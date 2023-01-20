@@ -32,6 +32,7 @@ import org.apache.lucene.analysis.gosen.tokenAttributes.PartOfSpeechAttribute;
 import org.apache.lucene.analysis.gosen.tokenAttributes.PronunciationsAttribute;
 import org.apache.lucene.analysis.gosen.tokenAttributes.ReadingsAttribute;
 import org.apache.lucene.analysis.gosen.tokenAttributes.SentenceStartAttribute;
+import org.apache.lucene.analysis.standard.StandardTokenizerImpl;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 
@@ -166,14 +167,18 @@ public final class GosenTokenizer extends Tokenizer {
     }
 
     public GosenTokenizer(StreamFilter filter) {
-        this(null, null);
+        this(filter, null);
     }
 
     public GosenTokenizer(StreamFilter filter, String dictionaryDir) {
         StringTagger stringTagger = SenFactory.getStringTagger(dictionaryDir);
         if (filter != null)
             stringTagger.addFilter(filter);
-        tagger = new StreamTagger2(stringTagger, null);
+        tagger = new StreamTagger2(stringTagger, this::reader);
+    }
+
+    private Reader reader() {
+        return this.input;
     }
 
     @Override
@@ -209,12 +214,13 @@ public final class GosenTokenizer extends Tokenizer {
     @Override
     public void reset() throws IOException {
         super.reset();
-        tagger.reset(null);
+        tagger.reset(this::reader);
         accumulatedCost = 0;
     }
 
     @Override
     public void end() throws IOException {
+        super.end();
         // set final offset
         final int finalOffset = correctOffset(tagger.end());
         offsetAtt.setOffset(finalOffset, finalOffset);
