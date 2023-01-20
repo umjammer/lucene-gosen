@@ -32,6 +32,9 @@
             -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
           </argLine>
           <trimStackTrace>true</trimStackTrace>
+          <excludes>
+            <exclude>org/apache/**</exclude>
+          </excludes>
         </configuration>
       </plugin>
     </plugins>
