@@ -82,11 +82,10 @@
           fork="true" dir="${dictype}">
       <classpath>
         <pathelement location="."/>
-        <pathelement location="../build/classes/java"/>
-        <pathelement location="../lib/jisx0213-1.0.jar"/>
+        <pathelement location="../target/classes"/>
         <pathelement path="${java.class.path}"/>
       </classpath>
-      <arg line="X-EUC-JISX0213" />
+      <arg line="EUCJIS" />
       <arg line="${dic.dir}" />
       <arg line="." />
     </java>
@@ -107,7 +106,7 @@
           fork="true" dir="${dictype}">
       <classpath>
         <pathelement location="."/>
-        <pathelement location="../build/classes/java"/>
+        <pathelement location="../target/classes"/>
         <pathelement path="${java.class.path}"/>
       </classpath>
       <arg line="${custom.dics}"/>
