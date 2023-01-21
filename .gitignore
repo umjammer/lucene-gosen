@@ -4,3 +4,4 @@ src/compiled-dictionaries/
 bin/
 dictionary/naist-chasen/
 .settings/org.eclipse.jdt.ui.prefs
+tmp/
