@@ -62,10 +62,10 @@ public class ReadingNode {
      * making them suitable for presentation where the "whole" reading at a given
      * position is desired
      */
-    public List<Reading> baseReadings = new ArrayList<Reading>();
+    public List<Reading> baseReadings = new ArrayList<>();
 
     /**
      * A sorted list of visible reading fragments within the covered range of morphemes
      */
-    public List<Reading> displayReadings = new ArrayList<Reading>();
+    public List<Reading> displayReadings = new ArrayList<>();
 }

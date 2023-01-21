@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 import net.java.sen.util.CSVParser;
@@ -73,13 +74,13 @@ public class CompoundWordTableCompiler {
         String t;
         int line = 0;
 
-        HashMap<String, String> compoundTable = new HashMap<String, String>();
-        StringBuffer buffer = new StringBuffer();
+        HashMap<String, String> compoundTable = new HashMap<>();
+        StringBuilder buffer = new StringBuilder();
         while ((t = reader.readLine()) != null) {
             CSVParser parser = null;
             try {
                 parser = new CSVParser(t);
-                String csv[] = parser.nextTokens();
+                String[] csv = parser.nextTokens();
                 if (csv.length < (partOfSpeechSize + partOfSpeechStart)) {
                     throw new RuntimeException("format error:" + line);
                 }
@@ -122,7 +123,7 @@ public class CompoundWordTableCompiler {
      *
      * @param args Ignored
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
 
         FileInputStream fileInputStream = null;
         InputStreamReader inputStreamReader = null;
@@ -130,7 +131,7 @@ public class CompoundWordTableCompiler {
 
         try {
             fileInputStream = new FileInputStream(COMPOUND_CSV_FILENAME);
-            inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
+            inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8);
             reader = new BufferedReader(inputStreamReader);
 
             buildTable(reader, PART_OF_SPEECH_START, PART_OF_SPEECH_SIZE, COMPOUND_TABLE_FILENAME);

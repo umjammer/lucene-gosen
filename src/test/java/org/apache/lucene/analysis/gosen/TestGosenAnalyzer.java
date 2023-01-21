@@ -18,13 +18,10 @@ package org.apache.lucene.analysis.gosen;
 
 import java.io.IOException;
 
-import com.carrotsearch.randomizedtesting.RandomizedRunner;
-import com.carrotsearch.randomizedtesting.annotations.ThreadLeakScope;
 import net.java.sen.SenTestUtil;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.BaseTokenStreamTestCase;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 
 
 /**
@@ -42,7 +39,7 @@ public class TestGosenAnalyzer extends BaseTokenStreamTestCase {
     }
 
     /**
-     * An example sentence, test removal of particles, etc by POS,
+     * An example sentence, test removal of particles, etc. by POS,
      * lemmatization with the basic form, and that position increments
      * and offsets are correct.
      */

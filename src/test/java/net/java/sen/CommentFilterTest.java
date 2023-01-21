@@ -64,7 +64,7 @@ public class CommentFilterTest {
         filter.readRules(new BufferedReader(new StringReader("< > 記号-注釈")));
         tagger.addFilter(filter);
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -89,7 +89,7 @@ public class CommentFilterTest {
         filter.readRules(new BufferedReader(new StringReader("< > 記号-注釈")));
         tagger.addFilter(filter);
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -114,7 +114,7 @@ public class CommentFilterTest {
         filter.readRules(new BufferedReader(new StringReader("< > 記号-注釈")));
         tagger.addFilter(filter);
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -140,7 +140,7 @@ public class CommentFilterTest {
         filter.readRules(new BufferedReader(new StringReader("< > 記号-注釈")));
         tagger.addFilter(filter);
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -166,7 +166,7 @@ public class CommentFilterTest {
         filter.readRules(new BufferedReader(new StringReader("< > 記号-注釈")));
         tagger.addFilter(filter);
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -193,7 +193,7 @@ public class CommentFilterTest {
         filter.readRules(new BufferedReader(new StringReader("< > 記号-注釈")));
         tagger.addFilter(filter);
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -220,7 +220,7 @@ public class CommentFilterTest {
         filter.readRules(new BufferedReader(new StringReader("《《 》》 記号-注釈")));
         tagger.addFilter(filter);
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }

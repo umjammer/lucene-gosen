@@ -52,7 +52,7 @@ public class BasicDecompositionTest {
 
         StringTagger tagger = getStringTagger();
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -154,7 +154,7 @@ public class BasicDecompositionTest {
 
         StringTagger tagger = getStringTagger();
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -181,7 +181,7 @@ public class BasicDecompositionTest {
 
         StringTagger tagger = getStringTagger();
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -207,7 +207,7 @@ public class BasicDecompositionTest {
 
         StringTagger tagger = getStringTagger();
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -246,7 +246,7 @@ public class BasicDecompositionTest {
 
         assertNotSame(ipadicTagger, naistChasenTagger);
 
-        List<Token> ipadicActualTokens = ipadicTagger.analyze(testString, new ArrayList<Token>());
+        List<Token> ipadicActualTokens = ipadicTagger.analyze(testString, new ArrayList<>());
         compareTokens(expectedIpadicTokens, ipadicActualTokens);
 
         List<Token> naistChasenActualTokens = naistChasenTagger.analyze(testString, ipadicActualTokens);
@@ -283,7 +283,7 @@ public class BasicDecompositionTest {
                 new Token("mündlichen", 31059, 0, 10, new Morpheme("未知語", null, null, "*", new String[] {}, new String[] {}, null))
         };
 
-        List<Token> analyzedTokens = tagger.analyze(strTest);
+        List<Token> analyzedTokens = tagger.analyze(strTest, new ArrayList<>());
         compareTokens(expectedTokens, analyzedTokens);
     }
 
@@ -302,7 +302,7 @@ public class BasicDecompositionTest {
                 new Token("ッﾊﾞサ", 31059, 0, 4, new Morpheme("未知語", null, null, "*", new String[] {}, new String[] {}, null))
         };
 
-        List<Token> analyzedTokens = tagger.analyze(strTest);
+        List<Token> analyzedTokens = tagger.analyze(strTest, new ArrayList<>());
         compareTokens(expectedTokens, analyzedTokens);
     }
 }

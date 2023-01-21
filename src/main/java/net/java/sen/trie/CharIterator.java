@@ -32,7 +32,7 @@ public interface CharIterator {
      * @return <code>true</code> if more characters are available, otherwise
      * <code>false</code>
      */
-    public boolean hasNext();
+    boolean hasNext();
 
     /**
      * Returns the next available character
@@ -40,5 +40,5 @@ public interface CharIterator {
      * @return The next available character
      * @throws NoSuchElementException - if no more elements are available
      */
-    public char next() throws NoSuchElementException;
+    char next() throws NoSuchElementException;
 }

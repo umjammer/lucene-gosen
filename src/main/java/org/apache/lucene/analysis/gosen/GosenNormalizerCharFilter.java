@@ -33,8 +33,8 @@ public class GosenNormalizerCharFilter extends BaseCharFilter {
   private static char[] specialCaseChars = new char[10];
 
   static {
-    specialCaseChars[0] = '\u309B'; // Katakana-Hiragana Voiced Sound Mark
-    specialCaseChars[1] = '\u309C'; // Katakana-Hiragana Semi-Voiced Sound Mark
+    specialCaseChars[0] = '゛'; // Katakana-Hiragana Voiced Sound Mark
+    specialCaseChars[1] = '゜'; // Katakana-Hiragana Semi-Voiced Sound Mark
   }
 
   public static String DEFAULT_NORM_FORM = "nfkc";

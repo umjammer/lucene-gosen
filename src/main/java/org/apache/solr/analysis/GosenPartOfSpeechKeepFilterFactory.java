@@ -76,7 +76,7 @@ public class GosenPartOfSpeechKeepFilterFactory extends ClassicFilterFactory imp
 
     public TokenFilter create(TokenStream stream) {
         if (keepTags != null) {
-            final TokenFilter filter = new GosenPartOfSpeechKeepFilter(stream, keepTags);
+            TokenFilter filter = new GosenPartOfSpeechKeepFilter(stream, keepTags);
             return filter;
         } else {
             return new TokenFilter(stream) {

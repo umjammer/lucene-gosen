@@ -33,7 +33,7 @@ public class CSVData {
     /**
      * The values comprising the line
      */
-    protected LinkedList<String> elements = new LinkedList<String>();
+    protected LinkedList<String> elements = new LinkedList<>();
 
     /**
      * Appends a value to the line
@@ -88,7 +88,7 @@ public class CSVData {
      */
     @Override
     public String toString() {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         Iterator<String> iterator = elements.iterator();
 
         boolean isFirst = true;
@@ -122,7 +122,7 @@ public class CSVData {
         }
 
         int size = string.length();
-        StringBuffer buffer = new StringBuffer(size * 2);
+        StringBuilder buffer = new StringBuilder(size * 2);
         buffer.append('"');
         for (int i = 0; i < size; i++) {
             char c = string.charAt(i);

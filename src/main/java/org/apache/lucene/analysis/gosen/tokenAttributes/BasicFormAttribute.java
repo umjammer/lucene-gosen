@@ -27,7 +27,7 @@ import org.apache.lucene.util.Attribute;
  * and will be set to "*"
  */
 public interface BasicFormAttribute extends Attribute {
-    public String getBasicForm();
+    String getBasicForm();
 
-    public void setMorpheme(Morpheme morpheme);
+    void setMorpheme(Morpheme morpheme);
 }

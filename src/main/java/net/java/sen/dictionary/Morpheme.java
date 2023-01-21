@@ -60,7 +60,7 @@ public class Morpheme {
      */
     private LoadState loaded;
 
-    private static enum LoadState {
+    private enum LoadState {
         NONE,
         BASIC,
         FULL
@@ -142,12 +142,12 @@ public class Morpheme {
             int readingData = DictionaryUtil.readVInt(buffer);
             int numReadings = readingData >>> 1;
 
-            readings = new ArrayList<String>(numReadings);
-            pronunciations = new ArrayList<String>(numReadings);
+            readings = new ArrayList<>(numReadings);
+            pronunciations = new ArrayList<>(numReadings);
 
             for (int i = 0; i < numReadings; i++) {
                 length = DictionaryUtil.readVInt(buffer);
-                final int readingLength = length >>> 1;
+                int readingLength = length >>> 1;
                 if ((readingData & 1) == 0) {
                     DictionaryUtil.readKatakana(buffer, temp, 0, readingLength);
                 } else {
@@ -156,7 +156,7 @@ public class Morpheme {
                 String reading = new String(temp, 0, readingLength);
                 readings.add(reading);
                 if ((length & 1) != 0) {
-                    final int pronunciationLength = DictionaryUtil.readVInt(buffer);
+                    int pronunciationLength = DictionaryUtil.readVInt(buffer);
                     if ((readingData & 1) == 0) {
                         DictionaryUtil.readKatakana(buffer, temp, 0, pronunciationLength);
                     } else {
@@ -336,8 +336,8 @@ public class Morpheme {
         this.basicForm = basicForm;
         this.conjugationalType = conjugationalType;
         this.conjugationalForm = conjugationalForm;
-        this.readings = new ArrayList<String>(Arrays.asList(readings));
-        this.pronunciations = new ArrayList<String>(Arrays.asList(pronunciations));
+        this.readings = new ArrayList<>(Arrays.asList(readings));
+        this.pronunciations = new ArrayList<>(Arrays.asList(pronunciations));
         this.partOfSpeech = partOfSpeech;
         this.additionalInformation = additionalInformation;
         this.loaded = LoadState.FULL;

@@ -54,7 +54,7 @@ public class SpaceTest {
 
         StringTagger tagger = getStringTagger();
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -77,7 +77,7 @@ public class SpaceTest {
 
         StringTagger tagger = getStringTagger();
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -101,7 +101,7 @@ public class SpaceTest {
 
         StringTagger tagger = getStringTagger();
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -125,7 +125,7 @@ public class SpaceTest {
 
         StringTagger tagger = getStringTagger();
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -149,7 +149,7 @@ public class SpaceTest {
 
         StringTagger tagger = getStringTagger();
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -173,7 +173,7 @@ public class SpaceTest {
 
         StringTagger tagger = getStringTagger();
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -197,7 +197,7 @@ public class SpaceTest {
 
         StringTagger tagger = getStringTagger();
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }

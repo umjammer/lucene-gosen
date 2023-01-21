@@ -46,7 +46,7 @@ public final class GosenWidthFilter extends TokenFilter {
      * as a fallback when they cannot properly combine with a preceding
      * character into a composed form.
      */
-    private static final char KANA_NORM[] = new char[] {
+    private static final char[] KANA_NORM = new char[] {
             0x30fb, 0x30f2, 0x30a1, 0x30a3, 0x30a5, 0x30a7, 0x30a9, 0x30e3, 0x30e5,
             0x30e7, 0x30c3, 0x30fc, 0x30a2, 0x30a4, 0x30a6, 0x30a8, 0x30aa, 0x30ab,
             0x30ad, 0x30af, 0x30b1, 0x30b3, 0x30b5, 0x30b7, 0x30b9, 0x30bb, 0x30bd,
@@ -63,10 +63,10 @@ public final class GosenWidthFilter extends TokenFilter {
     @Override
     public boolean incrementToken() throws IOException {
         if (input.incrementToken()) {
-            char text[] = termAtt.buffer();
+            char[] text = termAtt.buffer();
             int length = termAtt.length();
             for (int i = 0; i < length; i++) {
-                final char ch = text[i];
+                char ch = text[i];
                 if (ch >= 0xFF01 && ch <= 0xFF5E) {
                     // Fullwidth ASCII variants
                     text[i] -= 0xFEE0;
@@ -87,14 +87,14 @@ public final class GosenWidthFilter extends TokenFilter {
     }
 
     /* kana combining diffs: 0x30A6-0x30FD */
-    private static final byte KANA_COMBINE_VOICED[] = new byte[] {
+    private static final byte[] KANA_COMBINE_VOICED = new byte[] {
             78, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,
             0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1,
             0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 8, 8, 8, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
     };
 
-    private static final byte KANA_COMBINE_HALF_VOICED[] = new byte[] {
+    private static final byte[] KANA_COMBINE_HALF_VOICED = new byte[] {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 2,
             0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -102,8 +102,8 @@ public final class GosenWidthFilter extends TokenFilter {
     };
 
     /** returns true if we successfully combined the voice mark */
-    private static boolean combine(char text[], int pos, int length, char ch) {
-        final char prev = text[pos - 1];
+    private static boolean combine(char[] text, int pos, int length, char ch) {
+        char prev = text[pos - 1];
         if (prev >= 0x30A6 && prev <= 0x30FD) {
             text[pos - 1] += (ch == 0xFF9F)
                     ? KANA_COMBINE_HALF_VOICED[prev - 0x30A6]
@@ -113,7 +113,7 @@ public final class GosenWidthFilter extends TokenFilter {
         return false;
     }
 
-    private static int delete(char s[], int pos, int len) {
+    private static int delete(char[] s, int pos, int len) {
         if (pos < len)
             System.arraycopy(s, pos + 1, s, pos, len - pos - 1);
 

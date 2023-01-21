@@ -62,7 +62,7 @@ public class GosenAnalyzer extends StopwordAnalyzerBase {
         static {
             try {
                 DEFAULT_STOP_SET = loadStopwordSet(false, GosenAnalyzer.class, "stopwords_ja.txt", "#");
-                final CharArraySet tagset = loadStopwordSet(false, GosenAnalyzer.class, "stoptags_ja.txt", "#");
+                CharArraySet tagset = loadStopwordSet(false, GosenAnalyzer.class, "stoptags_ja.txt", "#");
                 DEFAULT_STOP_TAGS = new HashSet<>();
                 for (Object element : tagset) {
                     char[] chars = (char[]) element;

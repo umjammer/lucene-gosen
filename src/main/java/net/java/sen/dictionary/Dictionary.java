@@ -69,17 +69,17 @@ public class Dictionary {
      * A buffer used to store result indices from a Trie search. Reused on
      * every call to the {@link #commonPrefixSearch(CharIterator)} method
      */
-    private final int trieSearchResults[] = new int[256];
+    private final int[] trieSearchResults = new int[256];
 
     /**
      * A buffer used to store {@link CToken}s resulting from a search. Reused
      * on every call to the {@link #commonPrefixSearch(CharIterator)} method
      */
-    private final CToken results[] = new CToken[256];
+    private final CToken[] results = new CToken[256];
 
-    final String posIndex[];
-    final String conjTypeIndex[];
-    final String conjFormIndex[];
+    final String[] posIndex;
+    final String[] conjTypeIndex;
+    final String[] conjFormIndex;
 
     /**
      * Gets a unique beginning-of-string {@link CToken <code>CToken</code>}. The {@link CToken <code>CToken</code>} returned by this method is
@@ -105,7 +105,7 @@ public class Dictionary {
      * Gets a unique unknown-morpheme {@link CToken <code>CToken</code>}. The {@link CToken <code>CToken</code>} returned by this method is
      * freshly cloned and not an alias of any other {@link CToken <code>CToken</code>}
      *
-     * @return A unknown-morpheme CToken
+     * @return An unknown-morpheme CToken
      */
     public CToken getUnknownToken() {
         return unknownToken.clone();
@@ -129,7 +129,7 @@ public class Dictionary {
      * @return The connection cost
      */
     public int getCost(Node lNode2, Node lNode, Node rNode) {
-        final int position = connectionSize3 * (connectionSize2 * lNode2.rcAttr2 + lNode.rcAttr1) + rNode.lcAttr;
+        int position = connectionSize3 * (connectionSize2 * lNode2.rcAttr2 + lNode.rcAttr1) + rNode.lcAttr;
         return connectionCostBuffer.get(position) + rNode.dictionaryCost;
     }
 
@@ -182,7 +182,7 @@ public class Dictionary {
 
         this.connectionCostBuffer = buffer.slice();
 
-        // Map position infomation file.
+        // Map position information file.
         this.partOfSpeechInfoBuffer = partOfSpeechInfoBuffer;
 
         // Map token file

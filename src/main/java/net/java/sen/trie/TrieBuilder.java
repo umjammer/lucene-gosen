@@ -63,12 +63,12 @@ public class TrieBuilder {
     /**
      * The keys comprising the Trie
      */
-    private String keys[];
+    private String[] keys;
 
     /**
      * The values for each key
      */
-    private int values[];
+    private int[] values;
 
     /**
      * The actual number of entries in the keys/values arrays
@@ -107,8 +107,6 @@ public class TrieBuilder {
         }
     }
 
-    ;
-
     /**
      * Increases the size of the Trie data file
      *
@@ -134,7 +132,7 @@ public class TrieBuilder {
      */
     private Vector<TrieNode> fetch(TrieNode parent) {
         int prev = 0;
-        Vector<TrieNode> siblings = new Vector<TrieNode>();
+        Vector<TrieNode> siblings = new Vector<>();
 
         for (int i = parent.left; i < parent.right; i++) {
 
@@ -216,7 +214,7 @@ public class TrieBuilder {
                 resize((int) (t * 1.05));
             }
 
-            if (used.get(begin) == true) {
+            if (used.get(begin)) {
                 continue;
             }
 
@@ -253,20 +251,20 @@ public class TrieBuilder {
 
         int begin = findInsertionPoint(siblings);
 
-        for (int i = 0; i < siblings.size(); i++) {
-            trieDataBuffer.put(((begin + siblings.get(i).code) << 1) + 1, begin);
+        for (TrieNode trieNode : siblings) {
+            trieDataBuffer.put(((begin + trieNode.code) << 1) + 1, begin);
         }
 
-        for (int i = 0; i < siblings.size(); i++) {
-            int position = (begin + siblings.get(i).code) << 1;
+        for (TrieNode sibling : siblings) {
+            int position = (begin + sibling.code) << 1;
             int value;
 
-            Vector<TrieNode> newSiblings = fetch(siblings.get(i));
+            Vector<TrieNode> newSiblings = fetch(sibling);
             if (newSiblings.size() == 0) {
                 if (this.values == null) {
-                    value = (-siblings.get(i).left - 1);
+                    value = (-sibling.left - 1);
                 } else {
-                    value = -values[siblings.get(i).left] - 1;
+                    value = -values[sibling.left] - 1;
 
                     if (value >= 0) {
                         throw new RuntimeException("Fatal: Negative value assigned");
@@ -314,7 +312,7 @@ public class TrieBuilder {
      * @param values The values for each key
      * @param size   The actual number of entries in the key/value arrays
      */
-    public TrieBuilder(String keys[], int values[], int size) {
+    public TrieBuilder(String[] keys, int[] values, int size) {
         this.keys = keys;
         this.values = values;
         this.size = size;

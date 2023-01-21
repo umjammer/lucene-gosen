@@ -23,7 +23,7 @@ import java.text.CharacterIterator;
  * Wraps a char[] as CharacterIterator for processing with a BreakIterator
  */
 final class CharArrayIterator implements CharacterIterator {
-    private char array[];
+    private char[] array;
     private int start;
     private int index;
     private int length;
@@ -48,7 +48,7 @@ final class CharArrayIterator implements CharacterIterator {
      * @param start offset into buffer
      * @param length maximum length to examine
      */
-    void setText(final char array[], int start, int length) {
+    void setText(char[] array, int start, int length) {
         this.array = array;
         this.start = start;
         this.index = start;
@@ -64,7 +64,7 @@ final class CharArrayIterator implements CharacterIterator {
     // trigger a bug in RulebasedBreakIterator! work around this for now
     // by lying about all surrogates to the sentence tokenizer, instead
     // we treat them all as SContinue so we won't break around them.
-    public static final char jvmBugWorkaround(char ch) {
+    public static char jvmBugWorkaround(char ch) {
         return ch >= 0xD800 && ch <= 0xDFFF ? 0x002C : ch;
     }
 

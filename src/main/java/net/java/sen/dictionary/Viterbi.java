@@ -65,7 +65,7 @@ public class Viterbi {
      * @param rNode    The head of the linked list of Nodes
      * @param sentence The original sentence
      */
-    final private void calculateConnectionCosts(int position, int limit, Node rNode, Sentence sentence) throws IOException {
+    private void calculateConnectionCosts(int position, int limit, Node rNode, Sentence sentence) throws IOException {
         for (; rNode != null; rNode = rNode.rnext) {
             int bestCost = Integer.MAX_VALUE;
             Node bestNode = null;
@@ -176,7 +176,7 @@ public class Viterbi {
         Node resultNode = tokenizer.lookup(sentence.unconstrainedIterator(position), sentence.getCharacters());
 
         String sentenceString = new String(sentence.getCharacters());
-        List<Token> tokenList = new ArrayList<Token>();
+        List<Token> tokenList = new ArrayList<>();
         while (resultNode != null) {
             Token token = new Token(sentenceString, resultNode);
             tokenList.add(token);
@@ -255,7 +255,7 @@ public class Viterbi {
     /** @deprecated use {@link #getBestTokens(Sentence, List)} instead */
     @Deprecated
     public List<Token> getBestTokens(Sentence sentence) throws IOException {
-        return getBestTokens(sentence, new ArrayList<Token>());
+        return getBestTokens(sentence, new ArrayList<>());
     }
 
     /**

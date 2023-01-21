@@ -41,7 +41,7 @@ public final class GosenPartOfSpeechKeepFilter extends FilteringTokenFilter {
 
     @Override
     protected boolean accept() throws IOException {
-        final String pos = posAtt.getPartOfSpeech();
+        String pos = posAtt.getPartOfSpeech();
         return pos != null && keepTags.contains(pos);
     }
 }

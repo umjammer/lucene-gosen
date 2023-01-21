@@ -28,9 +28,9 @@ import org.apache.lucene.util.Attribute;
  * and will be set to "*"
  */
 public interface ConjugationAttribute extends Attribute {
-    public String getConjugationalForm();
+    String getConjugationalForm();
 
-    public String getConjugationalType();
+    String getConjugationalType();
 
-    public void setMorpheme(Morpheme morpheme);
+    void setMorpheme(Morpheme morpheme);
 }

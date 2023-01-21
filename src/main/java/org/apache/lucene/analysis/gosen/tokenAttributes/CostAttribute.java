@@ -24,7 +24,7 @@ import org.apache.lucene.util.Attribute;
  * Attribute for {@link Token#getCost()}. 
  */
 public interface CostAttribute extends Attribute {
-    public int getCost();
+    int getCost();
 
-    public void setCost(int cost);
+    void setCost(int cost);
 }

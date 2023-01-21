@@ -75,7 +75,7 @@ public class VirtualTupleList implements Closeable {
     /**
      * An index of entry positions within the temporary file
      */
-    private List<Integer> indices = new ArrayList<Integer>();
+    private List<Integer> indices = new ArrayList<>();
 
     /**
      * A Comparator for indices within the list
@@ -126,7 +126,7 @@ public class VirtualTupleList implements Closeable {
         CToken ctoken = new CToken();
         ctoken.read(mappedBuffer);
         short numChars = mappedBuffer.getShort();
-        char stringChars[] = new char[numChars];
+        char[] stringChars = new char[numChars];
         for (int i = 0; i < numChars; i++) {
             stringChars[i] = mappedBuffer.getChar();
         }
@@ -145,7 +145,7 @@ public class VirtualTupleList implements Closeable {
     private String getString(int position) {
         mappedBuffer.position((int) (position + CToken.SIZE));
         short numChars = mappedBuffer.getShort();
-        char stringChars[] = new char[numChars];
+        char[] stringChars = new char[numChars];
         for (int i = 0; i < numChars; i++) {
             stringChars[i] = mappedBuffer.getChar();
         }
@@ -161,7 +161,7 @@ public class VirtualTupleList implements Closeable {
     public void sort() throws IOException {
         outputStream.flush();
         mappedBuffer = file.getChannel().map(FileChannel.MapMode.READ_WRITE, 0, file.length());
-        Collections.sort(indices, comparator);
+        indices.sort(comparator);
     }
 
     /**

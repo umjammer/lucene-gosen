@@ -43,12 +43,12 @@ public class CommentFilter implements StreamFilter {
      * part-of-speech code to be used in the <code>Token</code>s
      * used to replace them
      */
-    protected List<Rule> ruleList = new ArrayList<Rule>();
+    protected List<Rule> ruleList = new ArrayList<>();
 
     /**
      * The comment <code>Token</code>s generated from the current sentence
      */
-    private List<Token> commentTokens = new ArrayList<Token>();
+    private List<Token> commentTokens = new ArrayList<>();
 
     /**
      * A rule defining the start and end of a comment, and the
@@ -158,15 +158,15 @@ public class CommentFilter implements StreamFilter {
         }
 
         if (tokens.size() == 0) {
-            return new ArrayList<Token>(commentTokens);
+            return new ArrayList<>(commentTokens);
         }
 
-        List<Token> newTokens = new ArrayList<Token>(tokens.size() + commentTokens.size());
+        List<Token> newTokens = new ArrayList<>(tokens.size() + commentTokens.size());
 
         Iterator<Token> iterator = this.commentTokens.iterator();
         Token commentToken = iterator.next();
-        for (int i = 0; i < tokens.size(); i++) {
-            while (commentToken != null && tokens.get(i).getStart() >= commentToken.getStart()) {
+        for (Token token : tokens) {
+            while (commentToken != null && token.getStart() >= commentToken.getStart()) {
                 newTokens.add(commentToken);
                 if (!iterator.hasNext()) {
                     commentToken = null;
@@ -174,7 +174,7 @@ public class CommentFilter implements StreamFilter {
                 }
                 commentToken = iterator.next();
             }
-            newTokens.add(tokens.get(i));
+            newTokens.add(token);
         }
 
         if (commentToken != null) {

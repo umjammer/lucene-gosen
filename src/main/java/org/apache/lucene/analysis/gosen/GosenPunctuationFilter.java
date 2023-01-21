@@ -39,7 +39,7 @@ public final class GosenPunctuationFilter extends FilteringTokenFilter {
         return termAtt.length() > 0 && !isPunctuation(termAtt.buffer()[0]);
     }
 
-    static final boolean isPunctuation(char ch) {
+    static boolean isPunctuation(char ch) {
         switch (Character.getType(ch)) {
         case Character.SPACE_SEPARATOR:
         case Character.LINE_SEPARATOR:

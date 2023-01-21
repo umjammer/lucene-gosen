@@ -39,7 +39,7 @@ public class TestGosenNormalizerCharFilterFactory extends LuceneTestCase {
      */
     @Test
     public void testDefaults() throws Exception {
-        Map<String, String> args = new HashMap<String, String>();
+        Map<String, String> args = new HashMap<>();
         args.put("name", "nfkc");
 
         checkToken(args, "This is a Ｔｅｓｔ", "This is a Test");
@@ -53,7 +53,7 @@ public class TestGosenNormalizerCharFilterFactory extends LuceneTestCase {
      */
     @Test
     public void testNFKCKatakana() throws IOException {
-        Map<String, String> args = new HashMap<String, String>();
+        Map<String, String> args = new HashMap<>();
         args.put("name", "nfkc");
 
         checkToken(args, "ﾊﾝｶｸｶﾅ", "ハンカクカナ");
@@ -67,7 +67,7 @@ public class TestGosenNormalizerCharFilterFactory extends LuceneTestCase {
      */
     @Test
     public void testNFKCAlphaNumeric() throws IOException {
-        Map<String, String> args = new HashMap<String, String>();
+        Map<String, String> args = new HashMap<>();
         args.put("name", "nfkc");
 
         checkToken(args, "半角ABCabcと１００万円", "半角ABCabcと100万円");
@@ -75,27 +75,27 @@ public class TestGosenNormalizerCharFilterFactory extends LuceneTestCase {
 
     @Test
     public void testNFKDKatakana() throws IOException {
-        Map<String, String> args = new HashMap<String, String>();
+        Map<String, String> args = new HashMap<>();
         args.put("name", "nfkc");
         args.put("mode", "decompose");
 
         //ボス
-        checkToken(args, "\u30DC\u30B9", "\u30DB\u3099\u30B9");
+        checkToken(args, "ボス", "ボス");
     }
 
     @Test
     public void testNFKDHiragana() throws IOException {
-        Map<String, String> args = new HashMap<String, String>();
+        Map<String, String> args = new HashMap<>();
         args.put("name", "nfkc");
         args.put("mode", "decompose");
 
         //ゔぁいおりん
-        checkToken(args, "\u3094\u3043\u304A\u308A\u3093", "\u3046\u3099\u3043\u304A\u308A\u3093");
+        checkToken(args, "ゔぃおりん", "ゔぃおりん");
     }
 
     @Test
     public void testNFKCHiragana() throws IOException {
-        Map<String, String> args = new HashMap<String, String>();
+        Map<String, String> args = new HashMap<>();
         args.put("name", "nfkc");
 
         checkToken(args, "か゛っきー", "がっきー");
@@ -104,7 +104,7 @@ public class TestGosenNormalizerCharFilterFactory extends LuceneTestCase {
 
     @Test
     public void testNFKCLongSentence() throws IOException {
-        Map<String, String> args = new HashMap<String, String>();
+        Map<String, String> args = new HashMap<>();
         args.put("name", "nfkc");
 
         checkToken(args,
@@ -115,7 +115,7 @@ public class TestGosenNormalizerCharFilterFactory extends LuceneTestCase {
 
     @Test
     public void testNFKCWhiteSpace() throws IOException {
-        Map<String, String> args = new HashMap<String, String>();
+        Map<String, String> args = new HashMap<>();
         args.put("name", "nfkc");
 
         checkToken(args, " ", " ");

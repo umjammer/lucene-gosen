@@ -31,7 +31,7 @@ public class TextUtil {
      * @return The converted string
      */
     public static String invertKanaCase(String result) {
-        StringBuffer foldedStringBuffer = new StringBuffer(result);
+        StringBuilder foldedStringBuffer = new StringBuilder(result);
         int length = foldedStringBuffer.length();
         for (int i = 0; i < length; i++) {
             char character = foldedStringBuffer.charAt(i);

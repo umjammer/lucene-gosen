@@ -28,7 +28,6 @@ import org.apache.lucene.analysis.BaseTokenStreamTestCase;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.util.AttributeFactory;
-import org.apache.lucene.util.Version;
 import org.junit.Test;
 
 
@@ -56,7 +55,7 @@ public class TestGosenPartOfSpeechStopFilterFactory extends BaseTokenStreamTestC
                 "#  verb-main:\n" +
                         "動詞-自立\n";
 
-        Map<String, String> args = new HashMap<String, String>();
+        Map<String, String> args = new HashMap<>();
         args.put("dictionaryDir", SenTestUtil.IPADIC_DIR);
         GosenTokenizerFactory tokenizerFactory = new GosenTokenizerFactory(args);
 
@@ -75,7 +74,7 @@ public class TestGosenPartOfSpeechStopFilterFactory extends BaseTokenStreamTestC
     @Test
     public void testRequireArguments() throws Exception {
         try {
-            Map<String, String> args = new HashMap<String, String>();
+            Map<String, String> args = new HashMap<>();
             args.put("bogusArg", "bogusValue");
             new GosenPartOfSpeechStopFilterFactory(args);
             fail();

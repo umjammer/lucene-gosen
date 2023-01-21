@@ -43,7 +43,7 @@ import net.java.sen.filter.StreamFilter;
 public class StreamTagger {
 
     /**
-     * The underlying StringTagger used to tokenise text
+     * The underlying StringTagger used to tokenize text
      */
     private StringTagger stringTagger = null;
 
@@ -129,7 +129,7 @@ public class StreamTagger {
                     return false;
                 }
                 if (tokens == null) {
-                    tokens = new ArrayList<Token>();
+                    tokens = new ArrayList<>();
                 }
                 tokens = stringTagger.analyze(new String(buffer, 0, i), new ArrayList<>());
             } while (tokens == null);
@@ -169,7 +169,7 @@ public class StreamTagger {
                     return null;
                 }
                 if (tokens == null) {
-                    tokens = new ArrayList<Token>();
+                    tokens = new ArrayList<>();
                 }
                 tokens = stringTagger.analyze(new String(buffer, 0, i), new ArrayList<>());
             } while (tokens == null || tokens.isEmpty());
@@ -199,7 +199,7 @@ public class StreamTagger {
     }
 
     /**
-     * @param stringTagger The StringTagger to use to tokenise the read text
+     * @param stringTagger The StringTagger to use to tokenize the read text
      * @param reader       The Reader to read text from
      */
     public StreamTagger(StringTagger stringTagger, Reader reader) {

@@ -39,7 +39,7 @@ public class OverrideFilter implements ReadingFilter {
      * integer index, any <code>ReadingNode</code> starting at that index will
      * have its visibility set to the stored value
      */
-    private Map<Integer, Boolean> visibility = new HashMap<Integer, Boolean>();
+    private Map<Integer, Boolean> visibility = new HashMap<>();
 
     public void filterReadings(List<Token> tokens, ReadingNode readingNode) {
         for (ReadingNode node = readingNode; node != null; node = node.next) {

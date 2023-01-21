@@ -44,7 +44,7 @@ public interface StreamFilter {
      *
      * @param sentence The sentence be pre-processed
      */
-    public void preProcess(Sentence sentence);
+    void preProcess(Sentence sentence);
 
     /**
      * Post-processes analysed tokens
@@ -52,5 +52,5 @@ public interface StreamFilter {
      * @param tokens The analysed tokens
      * @return The post-processed tokens
      */
-    public List<Token> postProcess(List<Token> tokens);
+    List<Token> postProcess(List<Token> tokens);
 }

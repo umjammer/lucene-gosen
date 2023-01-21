@@ -66,7 +66,7 @@ public class CompoundWordFilterTest {
         CompoundWordFilter filter = new CompoundWordFilter(tempCompoundFile.getAbsolutePath());
         tagger.addFilter(filter);
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -100,7 +100,7 @@ public class CompoundWordFilterTest {
         CompoundWordFilter filter = new CompoundWordFilter(tempCompoundFile.getAbsolutePath());
         tagger.addFilter(filter);
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }

@@ -52,10 +52,10 @@ public class PronunciationsAttributeImpl extends AttributeImpl implements Pronun
 
     @Override
     public void reflectWith(AttributeReflector reflector) {
-        final List<String> pronunciations = getPronunciations();
+        List<String> pronunciations = getPronunciations();
         List<String> enPronunciations = null;
         if (pronunciations != null) {
-            final String[] p = new String[pronunciations.size()];
+            String[] p = new String[pronunciations.size()];
             int i = 0;
             for (String kana : pronunciations) {
                 p[i++] = ToStringUtil.getRomanization(kana);

@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -108,7 +109,7 @@ public class IpadicPreprocessor {
             isr = new InputStreamReader(fis, this.charset);
             reader = new BufferedReader(isr);
             fos = new FileOutputStream(outputFilename);
-            osw = new OutputStreamWriter(fos, "UTF-8");
+            osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
             writer = new BufferedWriter(osw);
 
             String line = null;
@@ -179,7 +180,7 @@ public class IpadicPreprocessor {
 
             String line = null;
 
-            Map<String, List<String[]>> cforms = new HashMap<String, List<String[]>>();
+            Map<String, List<String[]>> cforms = new HashMap<>();
             String head = null;
             List<String[]> entries = null;
 
@@ -191,7 +192,7 @@ public class IpadicPreprocessor {
                         cforms.put(head, entries);
                     }
                     head = headMatcher.group(1);
-                    entries = new ArrayList<String[]>();
+                    entries = new ArrayList<>();
                 } else {
                     Matcher entryMatcher = entryPattern.matcher(line);
                     if (entryMatcher.find()) {
@@ -230,7 +231,7 @@ public class IpadicPreprocessor {
 
         try {
             fos = new FileOutputStream(outputFilename);
-            osw = new OutputStreamWriter(fos, "UTF-8");
+            osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
             writer = new BufferedWriter(osw);
 
             String expression = "^\\("
@@ -242,13 +243,7 @@ public class IpadicPreprocessor {
             Pattern linePattern = Pattern.compile(expression);
 
             File directory = new File(this.inputDirectory);
-            File[] dictionaryFiles = directory.listFiles(new FilenameFilter() {
-
-                public boolean accept(File dir, String name) {
-                    return name.matches("^.*\\.dic$");
-                }
-
-            });
+            File[] dictionaryFiles = directory.listFiles((dir, name) -> name.matches("^.*\\.dic$"));
 
             Arrays.sort(dictionaryFiles);
 

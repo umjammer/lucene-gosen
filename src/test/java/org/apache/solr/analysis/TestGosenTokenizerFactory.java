@@ -24,7 +24,6 @@ import java.util.Map;
 import org.apache.lucene.util.LuceneTestCase;
 import org.apache.solr.core.SolrResourceLoader;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 
 public class TestGosenTokenizerFactory extends LuceneTestCase {

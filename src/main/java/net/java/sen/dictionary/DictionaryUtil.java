@@ -29,20 +29,19 @@ public class DictionaryUtil {
     /** Reads an int stored in variable-length format.  Reads between one and
      * five bytes.  Smaller values take fewer bytes.  Negative numbers are not
      * supported.
-     * @see DataOutput#writeVInt(int)
+     * @see DataOutput#writeInt(int)
      */
     public static int readVInt(ByteBuffer bb) {
-    /* This is the original code of this method,
-     * but a Hotspot bug (see LUCENE-2975) corrupts the for-loop if
-     * readByte() is inlined. So the loop was unwinded!
-    byte b = readByte();
-    int i = b & 0x7F;
-    for (int shift = 7; (b & 0x80) != 0; shift += 7) {
-      b = readByte();
-      i |= (b & 0x7F) << shift;
-    }
-    return i;
-     */
+        // This is the original code of this method,
+        // but a Hotspot bug (see LUCENE-2975) corrupts the for-loop if
+        // readByte() is inlined. So the loop was unwinded!
+//        byte b = readByte();
+//        int i = b & 0x7F;
+//        for (int shift = 7; (b & 0x80) != 0; shift += 7) {
+//            b = readByte();
+//            i |= (b & 0x7F) << shift;
+//        }
+//        return i;
         byte b = bb.get();
         int i = b & 0x7F;
         if ((b & 0x80) == 0) return i;
@@ -63,7 +62,7 @@ public class DictionaryUtil {
     /** Writes an int in a variable-length format.  Writes between one and
      * five bytes.  Smaller values take fewer bytes.  Negative numbers are not
      * supported.
-     * @see DataInput#readVInt()
+     * @see java.io.DataInput#readInt()
      */
     public static void writeVInt(DataOutput d, int i) throws IOException {
         while ((i & ~0x7F) != 0) {
@@ -79,13 +78,13 @@ public class DictionaryUtil {
         }
     }
 
-    public static void readString(ByteBuffer b, char s[], int off, int len) {
+    public static void readString(ByteBuffer b, char[] s, int off, int len) {
         while (off < len) {
             s[off++] = b.getChar();
         }
     }
 
-    public static void readKatakana(ByteBuffer b, char s[], int off, int len) {
+    public static void readKatakana(ByteBuffer b, char[] s, int off, int len) {
         while (off < len) {
             s[off++] = (char) (0x30A0 + (b.get() & 0xff));
         }

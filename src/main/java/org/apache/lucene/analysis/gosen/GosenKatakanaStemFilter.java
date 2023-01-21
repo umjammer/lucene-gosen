@@ -30,10 +30,10 @@ import org.apache.lucene.analysis.tokenattributes.KeywordAttribute;
  * PROLONGED SOUND MARK (U+30FC) which exists at the last of the string. In
  * general, most of Japanese full-text search engine uses more complicated
  * method which needs dictionaries. I think they are better than this filter in
- * quality, but they needs a well-tuned dictionary. In contract, this filter is
+ * quality, but they need a well-tuned dictionary. In contract, this filter is
  * simple and maintenance-free.
  * <p>
- * Note: This filter don't supports hankaku katakana characters, so you must
+ * Note: This filter don't support hankaku katakana characters, so you must
  * convert them before using this filter. And this filter support only
  * pre-composed characters.
  * <p>
@@ -43,11 +43,11 @@ import org.apache.lucene.analysis.tokenattributes.KeywordAttribute;
  */
 public final class GosenKatakanaStemFilter extends TokenFilter {
 
-    static final char COMBINING_KATAKANA_HIRAGANA_VOICED_SOUND_MARK = '\u3099';
-    static final char COMBINING_KATAKANA_HIRAGANA_SEMI_VOICED_SOUND_MARK = '\u309A';
-    static final char KATAKANA_HIRAGANA_VOICED_SOUND_MARK = '\u309B';
-    static final char KATAKANA_HIRAGANA_SEMI_VOICED_SOUND_MARK = '\u309C';
-    static final char KATAKANA_HIRAGANA_PROLONGED_SOUND_MARK = '\u30FC';
+    static final char COMBINING_KATAKANA_HIRAGANA_VOICED_SOUND_MARK = '゙';
+    static final char COMBINING_KATAKANA_HIRAGANA_SEMI_VOICED_SOUND_MARK = '゚';
+    static final char KATAKANA_HIRAGANA_VOICED_SOUND_MARK = '゛';
+    static final char KATAKANA_HIRAGANA_SEMI_VOICED_SOUND_MARK = '゜';
+    static final char KATAKANA_HIRAGANA_PROLONGED_SOUND_MARK = 'ー';
 
     private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
     private final KeywordAttribute keywordAtt = addAttribute(KeywordAttribute.class);
@@ -63,7 +63,7 @@ public final class GosenKatakanaStemFilter extends TokenFilter {
     public boolean incrementToken() throws IOException {
         if (input.incrementToken()) {
             if (!keywordAtt.isKeyword()) {
-                final char buffer[] = termAtt.buffer();
+                char[] buffer = termAtt.buffer();
                 int length = termAtt.length();
                 if (length > 3 && buffer[length - 1] == KATAKANA_HIRAGANA_PROLONGED_SOUND_MARK && isKatakanaString(buffer, length)) {
                     termAtt.setLength(length - 1);
@@ -75,9 +75,9 @@ public final class GosenKatakanaStemFilter extends TokenFilter {
         }
     }
 
-    boolean isKatakanaString(char s[], int length) {
+    boolean isKatakanaString(char[] s, int length) {
         for (int i = 0; i < length; i++) {
-            final char c = s[i];
+            char c = s[i];
             if (Character.UnicodeBlock.of(c) != Character.UnicodeBlock.KATAKANA
                     && c != COMBINING_KATAKANA_HIRAGANA_VOICED_SOUND_MARK
                     && c != COMBINING_KATAKANA_HIRAGANA_SEMI_VOICED_SOUND_MARK

@@ -45,7 +45,7 @@ public class CompositeTokenFilter implements StreamFilter {
      * A list of rules defining the tokens that are to be combined, and the
      * part-of-speech string to be used for the combined tokens
      */
-    private List<Rule> rules = new ArrayList<Rule>();
+    private List<Rule> rules = new ArrayList<>();
 
     /**
      * A rule defining the tokens that are to be combined, and the
@@ -95,10 +95,9 @@ public class CompositeTokenFilter implements StreamFilter {
 
         @Override
         public String toString() {
-            StringBuffer buffer = new StringBuffer(partOfSpeech);
-            Iterator<String> iterator = ruleSet.iterator();
-            while (iterator.hasNext()) {
-                buffer.append(" ").append(iterator.next());
+            StringBuilder buffer = new StringBuilder(partOfSpeech);
+            for (String s : ruleSet) {
+                buffer.append(" ").append(s);
             }
 
             return new String(buffer);
@@ -120,8 +119,7 @@ public class CompositeTokenFilter implements StreamFilter {
      * @param partOfSpeech The part-of-speech code to remove
      */
     private void removeFromOtherRules(String partOfSpeech) {
-        for (int i = 0; i < rules.size(); i++) {
-            Rule rule = rules.get(i);
+        for (Rule rule : rules) {
             if (rule.contains(partOfSpeech)) {
                 rule.remove(partOfSpeech);
                 return;
@@ -145,7 +143,7 @@ public class CompositeTokenFilter implements StreamFilter {
                 continue;
             }
 
-            Set<String> ruleSet = new HashSet<String>();
+            Set<String> ruleSet = new HashSet<>();
             String first = tokenizer.nextToken();
             if (!tokenizer.hasMoreTokens()) {
                 // 1個しか無い場合は、連結品詞名であり、構成品詞名でもある
@@ -186,7 +184,7 @@ public class CompositeTokenFilter implements StreamFilter {
         String basicForm1 = token1.getMorpheme().getBasicForm();
         String basicForm2 = token2.getMorpheme().getBasicForm();
 
-        final String mergedBasicForm;
+        String mergedBasicForm;
         if (basicForm1.equals("*") && basicForm2.equals("*")) {
             mergedBasicForm = "*";
         } else {
@@ -252,7 +250,7 @@ public class CompositeTokenFilter implements StreamFilter {
             return tokens;
         }
 
-        List<Token> newTokens = new ArrayList<Token>();
+        List<Token> newTokens = new ArrayList<>();
         Token prevToken = null;
         Rule currentRule = null;
         outer_loop:
@@ -272,8 +270,7 @@ public class CompositeTokenFilter implements StreamFilter {
                     continue;
                 }
             }
-            for (int j = 0; j < rules.size(); j++) {
-                Rule rule = rules.get(j);
+            for (Rule rule : rules) {
                 if (rule.contains(token.getMorpheme().getPartOfSpeech())) {
                     currentRule = rule;
                     prevToken = token;

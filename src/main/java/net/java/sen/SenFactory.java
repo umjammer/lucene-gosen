@@ -35,7 +35,6 @@ import net.java.sen.dictionary.Tokenizer;
 import net.java.sen.dictionary.Viterbi;
 import net.java.sen.tokenizers.ja.JapaneseTokenizer;
 import net.java.sen.util.IOUtils;
-import vavi.util.Debug;
 
 
 /**
@@ -59,7 +58,7 @@ public class SenFactory {
     /**
      * Get the singleton factory instance
      *
-     * @param dictionaryDir a directory of dictinaries
+     * @param dictionaryDir a directory of dictionaries
      */
     public synchronized static SenFactory getInstance(String dictionaryDir) {
 
@@ -127,7 +126,7 @@ public class SenFactory {
         if (dictionaryDir == null || dictionaryDir.trim().length() == 0) {
             in = SenFactory.class.getResourceAsStream(name);
         } else {
-            in = new FileInputStream(new File(dictionaryDir, name));
+            in = Files.newInputStream(new File(dictionaryDir, name).toPath());
         }
         if (in == null) {
             throw new RuntimeException("Not found resource[" + name + "]. dictionaryDir=[" + dictionaryDir + "]");

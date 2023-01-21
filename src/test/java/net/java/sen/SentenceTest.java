@@ -786,7 +786,7 @@ public class SentenceTest {
 
         Viterbi viterbi = getViterbi();
 
-        List<Token> tokens = viterbi.getBestTokens(testSentence, new ArrayList<Token>());
+        List<Token> tokens = viterbi.getBestTokens(testSentence, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }

@@ -73,12 +73,12 @@ public class IOUtils {
     }
 
     /**
-     * adds a Throwable to the list of suppressed Exceptions of the first Throwable (if Java 7 is detected)
+     * adds a Throwable to the list of suppressed Exceptions to the first Throwable (if Java 7 is detected)
      *
      * @param exception  this exception should get the suppressed one added
      * @param suppressed the suppressed exception
      */
-    private static final void addSuppressed(Throwable exception, Throwable suppressed) {
+    private static void addSuppressed(Throwable exception, Throwable suppressed) {
         if (SUPPRESS_METHOD != null && exception != null && suppressed != null) {
             try {
                 SUPPRESS_METHOD.invoke(exception, suppressed);

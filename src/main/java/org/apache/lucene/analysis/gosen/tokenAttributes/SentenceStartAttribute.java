@@ -26,7 +26,7 @@ import org.apache.lucene.util.Attribute;
  * without slop.
  */
 public interface SentenceStartAttribute extends Attribute {
-    public boolean getSentenceStart();
+    boolean getSentenceStart();
 
-    public void setSentenceStart(boolean sentenceStart);
+    void setSentenceStart(boolean sentenceStart);
 }

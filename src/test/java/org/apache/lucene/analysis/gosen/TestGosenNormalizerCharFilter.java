@@ -45,7 +45,7 @@ public class TestGosenNormalizerCharFilter extends BaseTokenStreamTestCase {
     // decompose EAcute into E + combining Acute
     @Test
     public void testNFKCNormAcute() throws Exception {
-        checkToken("\u0065\u0301", "\u00E9");
+        checkToken("é", "é");
     }
 
     // Convert Full-width Latin to Half-width Latin
@@ -81,14 +81,14 @@ public class TestGosenNormalizerCharFilter extends BaseTokenStreamTestCase {
     // U+3099: Combining KATAKANA-HIRAGANA Voiced Sound Mark
     @Test
     public void testNFKCComposeHiragana() throws Exception {
-        checkToken("か" + '\u3099', "が");
+        checkToken("か" + '゙', "が");
     }
 
     // U+309B: KATAKANA-HIRAGANA Voiced Sound Mark
     // Standard ICU doesn't support this combination.
     @Test
     public void testNFKCComposeHiragaKatakanaMix() throws Exception {
-        checkToken("か" + '\u309B', "が");
+        checkToken("か" + '゛', "が");
     }
 
     // The filter doesn't remove 'space'
@@ -107,13 +107,13 @@ public class TestGosenNormalizerCharFilter extends BaseTokenStreamTestCase {
     // what we want to normalize and expected.
     @Test
     public void testUnexpectedBehavior() throws Exception {
-        checkToken("℃", "°C"); // \u2103 => \u00B0 + \u0043
+        checkToken("℃", "°C"); // ℃ => ° + C
     }
 
     // This behavior might be tricky when someone intentionally use Acute Accent,
     // which will be normalized to Combined Acute Accent.
     @Test
     public void testTrickyNormalization() throws Exception {
-        checkToken("´", " ́");  // \u00B4 => \u0301
+        checkToken("´", " ́");  // ´ => ́
     }
 }

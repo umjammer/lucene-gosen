@@ -57,7 +57,7 @@ public class CSVParser implements Closeable {
      * Advances to the next line of CSV data, if any, skipping any remaining
      * values on the current row
      *
-     * @return <code>true</code> if a line was read; false othewise
+     * @return <code>true</code> if a line was read; false otherwise
      * @throws IOException
      */
     public boolean nextRow() throws IOException {
@@ -115,9 +115,9 @@ public class CSVParser implements Closeable {
      * @throws IOException
      */
     public String[] nextTokens() throws IOException {
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
 
-        if (nextRow() == false) {
+        if (!nextRow()) {
             return null;
         }
 
@@ -126,7 +126,7 @@ public class CSVParser implements Closeable {
             list.add(input);
         }
 
-        String tokens[] = list.toArray(new String[0]);
+        String[] tokens = list.toArray(new String[0]);
 
         return tokens;
     }

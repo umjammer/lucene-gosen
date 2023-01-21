@@ -19,7 +19,6 @@ package org.apache.lucene.analysis.gosen;
 import java.io.IOException;
 import java.util.Random;
 
-import com.carrotsearch.randomizedtesting.RandomizedContext;
 import net.java.sen.SenTestUtil;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.BaseTokenStreamTestCase;

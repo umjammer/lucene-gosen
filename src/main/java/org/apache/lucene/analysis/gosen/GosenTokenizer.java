@@ -109,11 +109,11 @@ public final class GosenTokenizer extends Tokenizer {
             return false;
         } else {
             clearAttributes();
-            final Morpheme m = token.getMorpheme();
+            Morpheme m = token.getMorpheme();
 
             // note, unlike the previous implementation, we set the surface form
             termAtt.setEmpty().append(token.getSurface());
-            final int cost = token.getCost();
+            int cost = token.getCost();
 
             if (token.isSentenceStart()) {
                 accumulatedCost = 0;
@@ -149,7 +149,7 @@ public final class GosenTokenizer extends Tokenizer {
     public void end() throws IOException {
         super.end();
         // set final offset
-        final int finalOffset = correctOffset(tagger.end());
+        int finalOffset = correctOffset(tagger.end());
         offsetAtt.setOffset(finalOffset, finalOffset);
     }
 }

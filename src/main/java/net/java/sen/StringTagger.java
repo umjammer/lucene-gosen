@@ -52,7 +52,7 @@ public class StringTagger {
     /**
      * {@link StreamFilter}s to apply during analysis
      */
-    private List<StreamFilter> filterList = new ArrayList<StreamFilter>();
+    private List<StreamFilter> filterList = new ArrayList<>();
 
     /**
      * Apply the pre-processing phase of all attached {@link StreamFilter}s to
@@ -61,8 +61,8 @@ public class StringTagger {
      * @param sentence The input sentence
      */
     private void filterPreProcess(Sentence sentence) {
-        for (int i = 0; i < filterList.size(); i++) {
-            filterList.get(i).preProcess(sentence);
+        for (StreamFilter streamFilter : filterList) {
+            streamFilter.preProcess(sentence);
         }
     }
 
@@ -121,7 +121,7 @@ public class StringTagger {
      */
     @Deprecated
     public List<Token> analyze(String surface) throws IOException {
-        return analyze(surface, new ArrayList<Token>());
+        return analyze(surface, new ArrayList<>());
     }
 
     /**
@@ -147,7 +147,7 @@ public class StringTagger {
      */
     @Deprecated
     public List<Token> analyze(char[] surface) throws IOException {
-        return analyze(surface, new ArrayList<Token>());
+        return analyze(surface, new ArrayList<>());
     }
 
     /**

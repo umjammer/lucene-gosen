@@ -58,7 +58,7 @@ public class ReadingsAttributeImpl extends AttributeImpl implements ReadingsAttr
         List<String> readings = getReadings();
         List<String> enReadings = null;
         if (readings != null) {
-            enReadings = new ArrayList<String>(readings.size());
+            enReadings = new ArrayList<>(readings.size());
             for (String kana : readings) {
                 enReadings.add(ToStringUtil.getRomanization(kana));
             }

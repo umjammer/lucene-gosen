@@ -97,10 +97,8 @@ public class CompoundWordFilter implements StreamFilter {
             return tokens;
         }
 
-        List<Token> newTokens = new ArrayList<Token>();
-        for (int i = 0; i < tokens.size(); i++) {
-
-            Token token = tokens.get(i);
+        List<Token> newTokens = new ArrayList<>();
+        for (Token token : tokens) {
 
             String compoundInfo = compoundTable.get(token.getMorpheme().toString());
             if (compoundInfo == null) {
@@ -117,7 +115,7 @@ public class CompoundWordFilter implements StreamFilter {
                 String surface = getField(termInfo, 0);
                 newToken.setSurface(surface);
 
-                StringBuffer partOfSpeech = new StringBuffer(getField(termInfo, 2));
+                StringBuilder partOfSpeech = new StringBuilder(getField(termInfo, 2));
 
                 String tmp = getField(termInfo, 3);
                 if (!tmp.equals("*")) {
@@ -136,7 +134,7 @@ public class CompoundWordFilter implements StreamFilter {
 
                 newToken.setCost(token.getCost());
 
-                final String additionalInformation;
+                String additionalInformation;
                 if (getField(termInfo, 11).equals("-")) {
                     additionalInformation = "p=" + token.getMorpheme().getPartOfSpeech();
                 } else {
@@ -183,7 +181,7 @@ public class CompoundWordFilter implements StreamFilter {
             try {
                 IOUtils.close(is, fis);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         }
     }

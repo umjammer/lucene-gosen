@@ -26,7 +26,7 @@ import org.apache.lucene.util.Attribute;
  * Attribute for {@link Morpheme#getPronunciations()}.
  */
 public interface PronunciationsAttribute extends Attribute {
-    public List<String> getPronunciations();
+    List<String> getPronunciations();
 
-    public void setMorpheme(Morpheme morpheme);
+    void setMorpheme(Morpheme morpheme);
 }

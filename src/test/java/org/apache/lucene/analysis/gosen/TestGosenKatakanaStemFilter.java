@@ -24,7 +24,6 @@ import org.apache.lucene.analysis.BaseTokenStreamTestCase;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 
 
 public class TestGosenKatakanaStemFilter extends BaseTokenStreamTestCase {

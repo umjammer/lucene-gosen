@@ -47,36 +47,36 @@ class CostMatrixBuilder {
     /**
      * Set containing all unique values from one column of the Connection Cost CSV file
      */
-    private LinkedHashSet<String> ruleSet = new LinkedHashSet<String>();
+    private LinkedHashSet<String> ruleSet = new LinkedHashSet<>();
 
     /**
      * The input rules (from ruleSet) split into individual values
      */
-    private Vector<String[]> ruleList = new Vector<String[]>();
+    private Vector<String[]> ruleList = new Vector<>();
 
 
     /**
      * TODO This is magic. How does this work?
      */
-    private Vector<Vector<Integer>> idList = new Vector<Vector<Integer>>();
+    private Vector<Vector<Integer>> idList = new Vector<>();
 
     /**
      * // dic2IdHash('word type')= id for word type
      * TODO This is magic. How does this work?
      */
-    private Map<String, Integer> dicIndex = new HashMap<String, Integer>();
+    private Map<String, Integer> dicIndex = new HashMap<>();
 
 
     /**
      * A map containing a unique integer ID for each rule added
      */
-    private Map<String, Integer> ruleIndex = new HashMap<String, Integer>();
+    private Map<String, Integer> ruleIndex = new HashMap<>();
 
     /**
      * Contains the set of the rules' last fields where the field is not equal to '*'
      * TODO This is magic. How does this work?
      */
-    private Set<String> lexicalized = new HashSet<String>();
+    private Set<String> lexicalized = new HashSet<>();
 
     /**
      * Converts a list of part-of-speech / conjugation identifier strings to
@@ -87,12 +87,12 @@ class CostMatrixBuilder {
      * @param parent TODO How does this work?
      * @return A vector of IDs for the strings
      */
-    private Vector<Integer> getIdList(String csv[], boolean parent) {
-        Vector<Integer> results = new Vector<Integer>(ruleList.size());
+    private Vector<Integer> getIdList(String[] csv, boolean parent) {
+        Vector<Integer> results = new Vector<>(ruleList.size());
         results.setSize(ruleList.size());
 
         // Initialize results buffer that is based on the size of the ruleList
-        // And initial value is just a incremental numbers that will be an index of the ruleList.
+        // And initial value is just an incremental numbers that will be an index of the ruleList.
         for (int j = 0; j < ruleList.size(); j++) {
             results.set(j, j);
         }
@@ -125,19 +125,19 @@ class CostMatrixBuilder {
      * @param csv The split rule
      * @return The calculated ID
      */
-    private int getDicIdNoCache(String csv[]) {
+    private int getDicIdNoCache(String[] csv) {
         Vector<Integer> results = getIdList(csv, true);
 
         if (results.size() == 0) {
             throw new IllegalArgumentException();
         }
 
-        int priority[] = new int[results.size()];
+        int[] priority = new int[results.size()];
         int max = 0;
         for (int i = 0; i < results.size(); i++) {
-            String csvValues[] = ruleList.get(results.get(i));
-            for (int j = 0; j < csvValues.length; j++) {
-                if (csvValues[j].charAt(0) != '*') {
+            String[] csvValues = ruleList.get(results.get(i));
+            for (String csvValue : csvValues) {
+                if (csvValue.charAt(0) != '*') {
                     priority[i]++;
                 }
             }
@@ -167,11 +167,10 @@ class CostMatrixBuilder {
         int i = 0;
 
         ruleList.setSize(ruleSet.size());
-        for (Iterator<String> iterator = ruleSet.iterator(); iterator.hasNext(); ) {
-            String str = iterator.next();
+        for (String str : ruleSet) {
             ruleIndex.put(str, i);
 
-            String tokenList[] = str.split(",");
+            String[] tokenList = str.split(",");
 
             ruleList.set(i, tokenList);
             if (tokenList[tokenList.length - 1].charAt(0) != '*') {
@@ -190,9 +189,9 @@ class CostMatrixBuilder {
     }
 
     /**
-     * Returns the size of the built matrix axis
+     * Returns the size of the build matrix axis
      *
-     * @return The size of the built matrix axis
+     * @return The size of the build matrix axis
      */
     public int size() {
         return ruleList.size();
@@ -209,7 +208,7 @@ class CostMatrixBuilder {
 
         try {
             parser = new CSVParser(rule);
-            String csv[] = parser.nextTokens();
+            String[] csv = parser.nextTokens();
 
             String lex = csv[csv.length - 1];
 

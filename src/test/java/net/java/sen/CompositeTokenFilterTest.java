@@ -57,7 +57,7 @@ public class CompositeTokenFilterTest {
         filter.readRules(new BufferedReader(new StringReader("名詞-数 名詞-数 名詞-数記号")));
         tagger.addFilter(filter);
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -84,7 +84,7 @@ public class CompositeTokenFilterTest {
         filter.readRules(new BufferedReader(new StringReader("名詞-数 名詞-数 名詞-数記号")));
         tagger.addFilter(filter);
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
@@ -111,13 +111,13 @@ public class CompositeTokenFilterTest {
         filter.readRules(new BufferedReader(new StringReader("名詞-数 名詞-数 名詞-数記号")));
         tagger.addFilter(filter);
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }
 
     /**
-     * UnkownPOS composite
+     * UnknownPOS composite
      *
      * @throws IOException
      */
@@ -135,7 +135,7 @@ public class CompositeTokenFilterTest {
         filter.readRules(new BufferedReader(new StringReader("未知語 未知語")));
         tagger.addFilter(filter);
 
-        List<Token> tokens = tagger.analyze(testString, new ArrayList<Token>());
+        List<Token> tokens = tagger.analyze(testString, new ArrayList<>());
 
         compareTokens(testTokens, tokens);
     }

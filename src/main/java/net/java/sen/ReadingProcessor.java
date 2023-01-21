@@ -64,7 +64,7 @@ public class ReadingProcessor {
     /**
      * A map of reading filters to be applied in order of their integer keys
      */
-    private Map<Integer, ReadingFilter> filters = new TreeMap<Integer, ReadingFilter>();
+    private Map<Integer, ReadingFilter> filters = new TreeMap<>();
 
     /**
      * The Viterbi used to analyse text
@@ -250,10 +250,10 @@ public class ReadingProcessor {
      */
     private List<Reading> splitComplexToken(String text, String reading, int tokenStart) {
 
-        List<Reading> tokenReadings = new ArrayList<Reading>();
+        List<Reading> tokenReadings = new ArrayList<>();
 
         // Split the source text on kanji/kana boundaries
-        List<String> fragments = new ArrayList<String>();
+        List<String> fragments = new ArrayList<>();
         boolean fragmentIsKanji = (Character.UnicodeBlock.of(text.charAt(0)) == UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS);
         boolean firstFragmentIsKanji = fragmentIsKanji;
         int fragmentStart = 0;
@@ -265,22 +265,22 @@ public class ReadingProcessor {
                 fragmentIsKanji = newIsKanji;
             }
         }
-        fragments.add(text.substring(fragmentStart, text.length()));
+        fragments.add(text.substring(fragmentStart));
 
         // Find a way to split the reading to match the source text
-        String regexp = "^";
+        StringBuilder regexp = new StringBuilder("^");
         fragmentIsKanji = firstFragmentIsKanji;
         for (String fragment : fragments) {
             if (fragmentIsKanji) {
-                regexp += "(.*?)";
+                regexp.append("(.*?)");
             } else {
-                regexp += "(" + escapePatternSpecialChars(fragment) + ")";
+                regexp.append("(").append(escapePatternSpecialChars(fragment)).append(")");
             }
             fragmentIsKanji = !fragmentIsKanji;
         }
-        regexp += "$";
+        regexp.append("$");
 
-        Pattern pattern = Pattern.compile(regexp);
+        Pattern pattern = Pattern.compile(regexp.toString());
         Matcher matcher = pattern.matcher(reading);
         if (!matcher.find()) {
             return null;
@@ -312,7 +312,7 @@ public class ReadingProcessor {
     private List<Token> getTokens() {
         try {
             if (needsAnalysis) {
-                tokens = viterbi.getBestTokens(sentence, new ArrayList<Token>());
+                tokens = viterbi.getBestTokens(sentence, new ArrayList<>());
                 needsAnalysis = false;
             }
             return tokens;
@@ -490,7 +490,7 @@ public class ReadingProcessor {
      * @return The reading filters
      */
     public Map<Integer, ReadingFilter> getFilters() {
-        return new TreeMap<Integer, ReadingFilter>(filters);
+        return new TreeMap<>(filters);
     }
 
     /**
@@ -553,12 +553,10 @@ public class ReadingProcessor {
         }
 
         // Create reading list to return
-        List<Reading> readings = new ArrayList<Reading>();
+        List<Reading> readings = new ArrayList<>();
         for (; node != null; node = node.next) {
             if (node.visible) {
-                for (Reading reading : node.displayReadings) {
-                    readings.add(reading);
-                }
+                readings.addAll(node.displayReadings);
             }
         }
 
@@ -582,8 +580,8 @@ public class ReadingProcessor {
         }
 
         // Create reading list and visible token bit set
-        SortedMap<Integer, Reading> baseReadings = new TreeMap<Integer, Reading>();
-        SortedMap<Integer, Reading> displayReadings = new TreeMap<Integer, Reading>();
+        SortedMap<Integer, Reading> baseReadings = new TreeMap<>();
+        SortedMap<Integer, Reading> displayReadings = new TreeMap<>();
         BitSet visibleTokens = new BitSet();
         for (; node != null; node = node.next) {
             if (node.visible) {

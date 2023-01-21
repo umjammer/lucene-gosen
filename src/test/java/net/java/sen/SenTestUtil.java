@@ -116,18 +116,18 @@ public class SenTestUtil {
             return "null";
         }
 
-        String quotedStringArray = "new String[]{";
+        StringBuilder quotedStringArray = new StringBuilder("new String[]{");
 
         for (int i = 0; i < stringList.size(); i++) {
-            quotedStringArray += "\"" + stringList.get(i).replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+            quotedStringArray.append("\"").append(stringList.get(i).replace("\\", "\\\\").replace("\"", "\\\"")).append("\"");
             if (i < (stringList.size() - 1)) {
-                quotedStringArray += ", ";
+                quotedStringArray.append(", ");
             }
         }
 
-        quotedStringArray += "}";
+        quotedStringArray.append("}");
 
-        return quotedStringArray;
+        return quotedStringArray.toString();
     }
 
     /**

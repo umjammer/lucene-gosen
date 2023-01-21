@@ -125,10 +125,10 @@ public class DictionaryBuilder {
      */
     private static class TrieData {
         /** Trie keys */
-        public String keys[];
+        public String[] keys;
 
         /** Trie values */
-        public int values[];
+        public int[] values;
 
         /** The actual number of entries in the keys/values arrays */
         public int size;
@@ -140,8 +140,8 @@ public class DictionaryBuilder {
      * @param current The existing array
      * @return The resized array
      */
-    private static short[] resize(short current[]) {
-        short tmp[] = new short[(int) (current.length * 1.5)];
+    private static short[] resize(short[] current) {
+        short[] tmp = new short[(int) (current.length * 1.5)];
         System.arraycopy(current, 0, tmp, 0, current.length);
         return tmp;
     }
@@ -164,20 +164,20 @@ public class DictionaryBuilder {
         List<String> splitFieldList;
 
         if ((compoundField.length() == 0)
-                || (compoundField.charAt(0) == '{' && compoundField.indexOf('}') > 0) == false) {
+                || !(compoundField.charAt(0) == '{' && compoundField.indexOf('}') > 0)) {
             // No alternatives
-            splitFieldList = new ArrayList<String>(1);
+            splitFieldList = new ArrayList<>(1);
             splitFieldList.add(compoundField);
         } else {
             // 1 or more alternatives. No existing entry in Ipadic has more than 4
-            splitFieldList = new ArrayList<String>(4);
+            splitFieldList = new ArrayList<>(4);
 
             String[] parts = compoundField.split("[{}]");
             String tail = (parts.length == 3) ? parts[2] : "";
             String[] heads = parts[1].split("/");
 
-            for (int i = 0; i < heads.length; i++) {
-                splitFieldList.add(heads[i] + tail);
+            for (String head : heads) {
+                splitFieldList.add(head + tail);
             }
         }
 
@@ -224,9 +224,9 @@ public class DictionaryBuilder {
             bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
             outputStream = new DataOutputStream(bufferedOutputStream);
 
-            List<String> posIndex = new ArrayList<String>();
-            List<String> conjTypeIndex = new ArrayList<String>();
-            List<String> conjFormIndex = new ArrayList<String>();
+            List<String> posIndex = new ArrayList<>();
+            List<String> conjTypeIndex = new ArrayList<>();
+            List<String> conjFormIndex = new ArrayList<>();
 
             for (String dictionaryCSVFilename : dictionaryCSVFilenames) {
 
@@ -327,6 +327,7 @@ public class DictionaryBuilder {
                                 char ch = reading.charAt(i);
                                 if (ch < 0x30A0 || ch > 0x30FF) {
                                     encoding = 1;
+                                    break;
                                 }
                             }
                         }
@@ -336,6 +337,7 @@ public class DictionaryBuilder {
                                 char ch = pronunciation.charAt(i);
                                 if (ch < 0x30A0 || ch > 0x30FF) {
                                     encoding = 1;
+                                    break;
                                 }
                             }
                         }
@@ -451,9 +453,9 @@ public class DictionaryBuilder {
         matrixBuilders[0] = new CostMatrixBuilder();
         matrixBuilders[1] = new CostMatrixBuilder();
         matrixBuilders[2] = new CostMatrixBuilder();
-        Vector<String> rule1 = new Vector<String>();
-        Vector<String> rule2 = new Vector<String>();
-        Vector<String> rule3 = new Vector<String>();
+        Vector<String> rule1 = new Vector<>();
+        Vector<String> rule2 = new Vector<>();
+        Vector<String> rule3 = new Vector<>();
 
         // The approximate length of the file, plus a bit. If we're wrong it'll be
         // expanded during processing
@@ -469,7 +471,7 @@ public class DictionaryBuilder {
             fis = new FileInputStream(connectionCSVFilename);
             parser = new CSVParser(fis, charset);
 
-            String t[];
+            String[] t;
             int line = 0;
             while ((t = parser.nextTokens()) != null) {
                 if (t.length < 4) {
@@ -517,9 +519,9 @@ public class DictionaryBuilder {
             file.writeShort(size3);
             file.setLength(headerSizeBytes + matrixSizeBytes);
             indexChannel = file.getChannel();
-            MappedByteBuffer buffer = buffer = indexChannel.map(FileChannel.MapMode.READ_WRITE,
+            MappedByteBuffer buffer = indexChannel.map(FileChannel.MapMode.READ_WRITE,
                     headerSizeBytes, matrixSizeBytes);
-            ShortBuffer shortBuffer = shortBuffer = buffer.asShortBuffer();
+            ShortBuffer shortBuffer = buffer.asShortBuffer();
 
             for (int i = 0; i < (size1 * size2 * size3); i++) {
                 shortBuffer.put(i, defaultCost);
@@ -530,12 +532,9 @@ public class DictionaryBuilder {
                 Vector<Integer> r2 = matrixBuilders[1].getRuleIdList(rule2.get(i));
                 Vector<Integer> r3 = matrixBuilders[2].getRuleIdList(rule3.get(i));
 
-                for (Iterator<Integer> i1 = r1.iterator(); i1.hasNext(); ) {
-                    int ii1 = i1.next();
-                    for (Iterator<Integer> i2 = r2.iterator(); i2.hasNext(); ) {
-                        int ii2 = i2.next();
-                        for (Iterator<Integer> i3 = r3.iterator(); i3.hasNext(); ) {
-                            int ii3 = i3.next();
+                for (int ii1 : r1) {
+                    for (int ii2 : r2) {
+                        for (int ii3 : r3) {
                             int position = size3 * (size2 * ii1 + ii2) + ii3;
                             shortBuffer.put(position, scores[i]);
                         }
@@ -658,7 +657,7 @@ public class DictionaryBuilder {
     public DictionaryBuilder(String[] customDictionaryCSVFilenames)
             throws IOException {
 
-        List<String> dictionaryCSVFilenames = new ArrayList<String>();
+        List<String> dictionaryCSVFilenames = new ArrayList<>();
         dictionaryCSVFilenames.add(DICTIONARY_CSV_FILENAME);
         dictionaryCSVFilenames.addAll(Arrays.asList(customDictionaryCSVFilenames));
 

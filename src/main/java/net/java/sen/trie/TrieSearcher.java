@@ -37,7 +37,7 @@ public class TrieSearcher {
      * @return The number of results found
      * @throws ArrayIndexOutOfBoundsException if results[] is too small
      */
-    public static int commonPrefixSearch(IntBuffer trieData, CharIterator iterator, int results[]) {
+    public static int commonPrefixSearch(IntBuffer trieData, CharIterator iterator, int[] results) {
         int b = trieData.get(0 << 1);
         int num = 0;
         int n;

@@ -21,7 +21,7 @@ import java.util.HashMap;
 
 public class ToStringUtil {
     // a translation map for parts of speech, only used for reflectWith
-    private static final HashMap<String, String> posTranslations = new HashMap<String, String>();
+    private static final HashMap<String, String> posTranslations = new HashMap<>();
 
     static {
         posTranslations.put("名詞", "noun");
@@ -123,7 +123,7 @@ public class ToStringUtil {
     }
 
     // a translation map for conjugational types, only used for reflectWith
-    private static final HashMap<String, String> conjTypeTranslations = new HashMap<String, String>();
+    private static final HashMap<String, String> conjTypeTranslations = new HashMap<>();
 
     static {
         conjTypeTranslations.put("*", "*");
@@ -193,7 +193,7 @@ public class ToStringUtil {
     }
 
     // a translation map for conjugated forms, only used for reflectWith
-    private static final HashMap<String, String> conjFormTranslations = new HashMap<String, String>();
+    private static final HashMap<String, String> conjFormTranslations = new HashMap<>();
 
     static {
         conjFormTranslations.put("*", "*");
@@ -237,7 +237,7 @@ public class ToStringUtil {
      */
     public static String getRomanization(String s) {
         StringBuilder builder = new StringBuilder();
-        final int len = s.length();
+        int len = s.length();
         for (int i = 0; i < len; i++) {
             // maximum lookahead: 3
             char ch = s.charAt(i);

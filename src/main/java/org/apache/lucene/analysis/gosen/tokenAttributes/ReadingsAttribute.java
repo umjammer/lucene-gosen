@@ -23,7 +23,7 @@ import org.apache.lucene.util.Attribute;
 
 
 public interface ReadingsAttribute extends Attribute {
-    public List<String> getReadings();
+    List<String> getReadings();
 
-    public void setMorpheme(Morpheme morpheme);
+    void setMorpheme(Morpheme morpheme);
 }

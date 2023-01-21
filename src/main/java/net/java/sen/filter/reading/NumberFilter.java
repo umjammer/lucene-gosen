@@ -88,14 +88,12 @@ public class NumberFilter implements ReadingFilter {
                             "一三四六八十百千万".contains(numberKanji)
                                     && ("はひふへほ".indexOf(firstReadingChar) != -1)
                     ) {
-                        String newText = (char) (firstReadingChar + 0x02) + reading.text.substring(1, reading.text.length());
+                        String newText = (char) (firstReadingChar + 0x02) + reading.text.substring(1);
                         Reading newReading = new Reading(reading.start, reading.length, newText);
                         node.baseReadings.set(0, newReading);
                         node.displayReadings.set(0, newReading);
-                        continue;
                     }
                 }
-
             }
         }
     }
