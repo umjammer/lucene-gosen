@@ -29,41 +29,10 @@ import org.apache.lucene.analysis.gosen.tokenAttributes.PartOfSpeechAttribute;
  */
 public final class GosenPartOfSpeechStopFilter extends FilteringTokenFilter {
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ((posAtt == null) ? 0 : posAtt.hashCode());
-        result = prime * result + ((stopTags == null) ? 0 : stopTags.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        GosenPartOfSpeechStopFilter other = (GosenPartOfSpeechStopFilter) obj;
-        if (posAtt == null) {
-            if (other.posAtt != null)
-                return false;
-        } else if (!posAtt.equals(other.posAtt))
-            return false;
-        if (stopTags == null) {
-            if (other.stopTags != null)
-                return false;
-        } else if (!stopTags.equals(other.stopTags))
-            return false;
-        return true;
-    }
-
     private final Set<String> stopTags;
     private final PartOfSpeechAttribute posAtt = addAttribute(PartOfSpeechAttribute.class);
 
-    public GosenPartOfSpeechStopFilter(boolean enablePositionIncrements, TokenStream input, Set<String> stopTags) {
+    public GosenPartOfSpeechStopFilter(TokenStream input, Set<String> stopTags) {
         super(input);
         this.stopTags = stopTags;
     }

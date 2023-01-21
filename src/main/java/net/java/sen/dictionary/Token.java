@@ -189,55 +189,6 @@ public class Token {
         return getStart() + getLength();
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + cost;
-        result = prime * result + length;
-        result = prime * result + ((morpheme == null) ? 0 : morpheme.hashCode());
-        result = prime * result + (sentenceStart ? 1231 : 1237);
-        result = prime * result + start;
-        result = prime * result + ((surface == null) ? 0 : surface.hashCode());
-        return result;
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Token other = (Token) obj;
-        if (cost != other.cost)
-            return false;
-        if (length != other.length)
-            return false;
-        if (morpheme == null) {
-            if (other.morpheme != null)
-                return false;
-        } else if (!morpheme.equals(other.morpheme))
-            return false;
-        if (sentenceStart != other.sentenceStart)
-            return false;
-        if (start != other.start)
-            return false;
-        if (surface == null) {
-            if (other.surface != null)
-                return false;
-        } else if (!surface.equals(other.surface))
-            return false;
-        return true;
-    }
-
     /**
      * Returns the character range of this Token within the underlying sentence
      *

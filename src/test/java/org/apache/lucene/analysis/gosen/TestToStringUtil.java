@@ -16,11 +16,12 @@
 
 package org.apache.lucene.analysis.gosen;
 
-import org.apache.lucene.util.LuceneTestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class TestToStringUtil extends LuceneTestCase {
+public class TestToStringUtil {
 
     @Test
     public void testPOS() {

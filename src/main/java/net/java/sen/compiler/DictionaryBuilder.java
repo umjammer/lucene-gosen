@@ -211,7 +211,6 @@ public class DictionaryBuilder {
                                             String eosPartOfSpeech, String unknownPartOfSpeech,
                                             VirtualTupleList dictionaryList, CToken[] standardCTokens)
             throws IOException {
-        String[] csvValues = null;
 
         CSVData key_b = new CSVData();
         CSVData pos_b = new CSVData();
@@ -237,6 +236,7 @@ public class DictionaryBuilder {
                     fileInputStream = new FileInputStream(dictionaryCSVFilename);
                     parser = new CSVParser(fileInputStream, charset);
 
+                    String[] csvValues;
                     while ((csvValues = parser.nextTokens()) != null) {
 
                         if (csvValues.length < (partOfSpeechSize + partOfSpeechStart)) {
@@ -475,15 +475,20 @@ public class DictionaryBuilder {
                 if (t.length < 4) {
                     throw new IOException("Connection cost CSV format error");
                 }
+
+                // First POS information
                 matrixBuilders[0].add(t[0]);
                 rule1.add(t[0]);
 
+                // Second POS information
                 matrixBuilders[1].add(t[1]);
                 rule2.add(t[1]);
 
+                // Third POS information
                 matrixBuilders[2].add(t[2]);
                 rule3.add(t[2]);
 
+                // Score for the above combination
                 if (line == scores.length) {
                     scores = resize(scores);
                 }
@@ -502,8 +507,6 @@ public class DictionaryBuilder {
             int ruleSize = rule1.size();
 
             // Write connection cost data
-            MappedByteBuffer buffer = null;
-            ShortBuffer shortBuffer = null;
             int matrixSizeBytes = (size1 * size2 * size3 * 2);
             int headerSizeBytes = (3 * 2);
 
@@ -514,9 +517,9 @@ public class DictionaryBuilder {
             file.writeShort(size3);
             file.setLength(headerSizeBytes + matrixSizeBytes);
             indexChannel = file.getChannel();
-            buffer = indexChannel.map(FileChannel.MapMode.READ_WRITE,
+            MappedByteBuffer buffer = buffer = indexChannel.map(FileChannel.MapMode.READ_WRITE,
                     headerSizeBytes, matrixSizeBytes);
-            shortBuffer = buffer.asShortBuffer();
+            ShortBuffer shortBuffer = shortBuffer = buffer.asShortBuffer();
 
             for (int i = 0; i < (size1 * size2 * size3); i++) {
                 shortBuffer.put(i, defaultCost);

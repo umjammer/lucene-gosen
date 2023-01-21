@@ -1,12 +1,12 @@
 /**
  * Copyright 2004 The Apache Software Foundation
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,7 +27,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
-@RunWith(com.carrotsearch.randomizedtesting.RandomizedRunner.class)
 public class TestGosenTokenizerFactory extends LuceneTestCase {
 
     private File baseDir;
@@ -36,6 +35,7 @@ public class TestGosenTokenizerFactory extends LuceneTestCase {
 
     @Override
     public void setUp() throws Exception {
+        super.setUp();
         File testRoot = new File(System.getProperty("java.io.tmpdir")).getCanonicalFile();
         baseDir = new File(testRoot, "core-test");
         baseDir.mkdir();
@@ -47,13 +47,14 @@ public class TestGosenTokenizerFactory extends LuceneTestCase {
 
     @Override
     public void tearDown() throws Exception {
+        super.tearDown();
         dicDir.delete();
         confDir.delete();
         baseDir.delete();
     }
 
     @Test
-    void testDictionaryDir() throws Exception {
+    public void testDictionaryDir() throws Exception {
 
         SolrResourceLoader loader = new SolrResourceLoader(baseDir.toPath(), GosenTokenizerFactory.class.getClassLoader());
         Map<String, String> args = new HashMap<>();
@@ -67,7 +68,7 @@ public class TestGosenTokenizerFactory extends LuceneTestCase {
         args.put("dictionaryDir", dicDir.getName());
         factory = new GosenTokenizerFactory(args);
         factory.inform(loader);
-        assertEquals("dictionaryDir is incorrect.", dicDir.getAbsolutePath(), field.get(factory));
+        assertEquals("dictionaryDir is incorrect.", dicDir.getName(), field.get(factory));
 
         // absolute path
         args.put("dictionaryDir", dicDir.getAbsolutePath());

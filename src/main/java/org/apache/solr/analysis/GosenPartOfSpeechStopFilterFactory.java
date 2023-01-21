@@ -17,6 +17,7 @@
 package org.apache.solr.analysis;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -43,16 +44,23 @@ import org.apache.lucene.analysis.util.ResourceLoaderAware;
  * &lt;/fieldType&gt;</pre>
  */
 public class GosenPartOfSpeechStopFilterFactory extends ClassicFilterFactory implements ResourceLoaderAware {
-    private boolean enablePositionIncrements;
+    private final String stopTagFiles;
     private Set<String> stopTags;
 
     public GosenPartOfSpeechStopFilterFactory(Map<String, String> args) {
-        super(args);
+        super(Collections.emptyMap());
+
+        stopTagFiles = require(args, "tags");
+
+        if (args.containsKey("enablePositionIncrements")) {
+            throw new IllegalArgumentException("enablePositionIncrements is not a valid option as of Lucene 5.0");
+        }
+        if (!args.isEmpty()) {
+            throw new IllegalArgumentException("Unknown parameters: " + args);
+        }
     }
 
     public void inform(ResourceLoader loader) {
-        String stopTagFiles = getOriginalArgs().get("tags");
-        enablePositionIncrements = getBoolean(getOriginalArgs(), "enablePositionIncrements", false);
         try {
             CharArraySet cas = getWordSet(loader, stopTagFiles, false);
             stopTags = new HashSet<>();
@@ -66,6 +74,16 @@ public class GosenPartOfSpeechStopFilterFactory extends ClassicFilterFactory imp
     }
 
     public TokenFilter create(TokenStream stream) {
-        return new GosenPartOfSpeechStopFilter(enablePositionIncrements, stream, stopTags);
+        if (stopTags != null) {
+            final TokenFilter filter = new GosenPartOfSpeechStopFilter(stream, stopTags);
+            return filter;
+        } else {
+            return new TokenFilter(stream) {
+                @Override
+                public boolean incrementToken() throws IOException {
+                    return false;
+                }
+            };
+        }
     }
 }

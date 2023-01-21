@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 
 public class TestCharArrayIterator {
+
     @Test
     void testBasicUsage() {
         CharArrayIterator ci = new CharArrayIterator();

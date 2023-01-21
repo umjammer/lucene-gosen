@@ -28,7 +28,9 @@ import org.apache.lucene.analysis.StopwordAnalyzerBase;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.miscellaneous.KeywordMarkerFilter;
-import org.apache.lucene.analysis.standard.StandardTokenizer;
+import org.apache.lucene.analysis.miscellaneous.SetKeywordMarkerFilter;
+
+import static org.apache.lucene.analysis.gosen.GosenTokenizer.DEFAULT_UNKNOWN_KATAKANA_TOKENIZATION;
 
 
 /**
@@ -37,8 +39,9 @@ import org.apache.lucene.analysis.standard.StandardTokenizer;
 public class GosenAnalyzer extends StopwordAnalyzerBase {
 
     private final Set<String> stoptags;
-    private final Set<?> stemExclusionSet;
+    private final CharArraySet stemExclusionSet;
     private final String dictionaryDir;
+    private final boolean tokenizeUnknownKatakana;
 
     public static Set<?> getDefaultStopSet() {
         return DefaultSetHolder.DEFAULT_STOP_SET;
@@ -77,7 +80,7 @@ public class GosenAnalyzer extends StopwordAnalyzerBase {
      * Create a GosenAnalyzer with the default stopwords and stoptags and no stemExclusionSet
      */
     public GosenAnalyzer() {
-        this(DefaultSetHolder.DEFAULT_STOP_SET, DefaultSetHolder.DEFAULT_STOP_TAGS, CharArraySet.EMPTY_SET, null);
+        this(DefaultSetHolder.DEFAULT_STOP_SET, DefaultSetHolder.DEFAULT_STOP_TAGS, CharArraySet.EMPTY_SET, null, DEFAULT_UNKNOWN_KATAKANA_TOKENIZATION);
     }
 
     /**
@@ -85,24 +88,40 @@ public class GosenAnalyzer extends StopwordAnalyzerBase {
      * and argument of dictionaryDir.
      */
     public GosenAnalyzer(String dictionaryDir) {
-        this(DefaultSetHolder.DEFAULT_STOP_SET, DefaultSetHolder.DEFAULT_STOP_TAGS, CharArraySet.EMPTY_SET, dictionaryDir);
+        this(DefaultSetHolder.DEFAULT_STOP_SET, DefaultSetHolder.DEFAULT_STOP_TAGS, CharArraySet.EMPTY_SET, dictionaryDir, DEFAULT_UNKNOWN_KATAKANA_TOKENIZATION);
+    }
+
+    /**
+     * Create a GosenAnalyzer that only receives dictionaryDir and tokenizeUnknownKatakana value.
+     */
+    public GosenAnalyzer(String dictionaryDir, boolean tokenizeUnknownKatakana) {
+        this(DefaultSetHolder.DEFAULT_STOP_SET, DefaultSetHolder.DEFAULT_STOP_TAGS, CharArraySet.EMPTY_SET, dictionaryDir, tokenizeUnknownKatakana);
+    }
+
+    /**
+     * Create a GosenAnalyzer with the specified stopwords, stoptags, stemExclusionSet and dictionaryDir
+     */
+    public GosenAnalyzer(CharArraySet stopwords, Set<String> stoptags, CharArraySet stemExclusionSet, String dictionaryDir) {
+        this(stopwords, stoptags, stemExclusionSet, dictionaryDir, DEFAULT_UNKNOWN_KATAKANA_TOKENIZATION);
     }
 
     /**
      * Create a GosenAnalyzer with the specified stopwords, stoptags, and stemExclusionSet
      *
-     * @param version lucene compatibility version
      * @param stopwords a stopword set: words matching these (Surf
      * @param stoptags a stoptags set: words containing these parts of speech will be removed from the stream.
      * @param stemExclusionSet a stemming exclusion set: these words are ignored by
      *        {@link GosenBasicFormFilter} and {@link GosenKatakanaStemFilter}
      * @param dictionaryDir a directory of dictionary
+     * @param tokenizeUnknownKatakana a flag that control segmentation behaviour :
+     *                                 if false, will not concatenate consecutive Katakana tokens when one of them is an UNKNOWN.
      */
-    public GosenAnalyzer(CharArraySet stopwords, Set<String> stoptags, Set<?> stemExclusionSet, String dictionaryDir) {
+    public GosenAnalyzer(CharArraySet stopwords, Set<String> stoptags, CharArraySet stemExclusionSet, String dictionaryDir, boolean tokenizeUnknownKatakana) {
         super(stopwords);
         this.stoptags = stoptags;
         this.stemExclusionSet = stemExclusionSet;
         this.dictionaryDir = dictionaryDir;
+        this.tokenizeUnknownKatakana = tokenizeUnknownKatakana;
     }
 
     /**
@@ -120,18 +139,14 @@ public class GosenAnalyzer extends StopwordAnalyzerBase {
      */
     @Override
     protected TokenStreamComponents createComponents(String fieldName) {
-        Tokenizer tokenizer = new GosenTokenizer(null, dictionaryDir);
+        Tokenizer tokenizer = new GosenTokenizer(null, dictionaryDir, tokenizeUnknownKatakana);
         TokenStream stream = new GosenWidthFilter(tokenizer);
         stream = new GosenPunctuationFilter(true, stream);
-        stream = new GosenPartOfSpeechStopFilter(true, stream, stoptags);
+        stream = new GosenPartOfSpeechStopFilter(stream, stoptags);
         stream = new StopFilter(stream, stopwords);
-        if (!stemExclusionSet.isEmpty())
-            stream = new KeywordMarkerFilter(stream) {
-                @Override
-                protected boolean isKeyword() {
-                    return stemExclusionSet.contains(fieldName); // TODO
-                }
-            };
+        if (!stemExclusionSet.isEmpty()) {
+            stream = new SetKeywordMarkerFilter(stream, stemExclusionSet);
+        }
         stream = new GosenBasicFormFilter(stream);
         stream = new GosenKatakanaStemFilter(stream);
         stream = new LowerCaseFilter(stream);

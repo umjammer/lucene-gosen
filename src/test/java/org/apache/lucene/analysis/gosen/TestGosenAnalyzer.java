@@ -18,11 +18,11 @@ package org.apache.lucene.analysis.gosen;
 
 import java.io.IOException;
 
-import com.carrotsearch.randomizedtesting.RandomizedContext;
+import com.carrotsearch.randomizedtesting.RandomizedRunner;
+import com.carrotsearch.randomizedtesting.annotations.ThreadLeakScope;
 import net.java.sen.SenTestUtil;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.BaseTokenStreamTestCase;
-import org.apache.lucene.analysis.gosen.GosenAnalyzer;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
@@ -30,7 +30,6 @@ import org.junit.runner.RunWith;
 /**
  * Simple tests for {@link GosenAnalyzer}
  */
-@RunWith(com.carrotsearch.randomizedtesting.RandomizedRunner.class)
 public class TestGosenAnalyzer extends BaseTokenStreamTestCase {
 
     /**
@@ -58,12 +57,36 @@ public class TestGosenAnalyzer extends BaseTokenStreamTestCase {
     }
 
     /**
+     * Tests a sentence that consists of Katakana characters
+     */
+    @Test
+    public void testUnknownKatakanaSentence() throws IOException {
+        assertAnalyzesTo(new GosenAnalyzer(SenTestUtil.IPADIC_DIR, false), "メイフラワーアレンジメント",
+                new String[] { "メイフラワーアレンジメント" },
+                new int[] { 0 },
+                new int[] { 13 }
+        );
+    }
+
+    /**
+     * Tests a sentence that consists of Katakana characters
+     */
+    @Test
+    public void testUnknownKatakanaSentence2() throws IOException {
+        assertAnalyzesTo(new GosenAnalyzer(SenTestUtil.IPADIC_DIR, true), "メイフラワーアレンジメント",
+                new String[] { "メ", "イ", "フラワ", "アレンジメント" },
+                new int[] { 0, 1, 2, 6, },
+                new int[] { 1, 2, 6, 13 }
+        );
+    }
+
+    /**
      * Analyzes random unicode strings, to ensure no exception
      * (results could be completely bogus, but makes sure we don't crash on some input)
      */
     @Test
     void testReliability() throws IOException {
         Analyzer analyzer = new GosenAnalyzer(SenTestUtil.IPADIC_DIR);
-        checkRandomData(RandomizedContext.current().getRandom(), analyzer, 10000);
+        checkRandomData(random(), analyzer, 10000);
     }
 }

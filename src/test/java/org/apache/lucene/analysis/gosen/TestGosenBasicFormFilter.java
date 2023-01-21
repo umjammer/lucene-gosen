@@ -17,6 +17,7 @@
 package org.apache.lucene.analysis.gosen;
 
 import java.io.IOException;
+import java.util.Random;
 
 import com.carrotsearch.randomizedtesting.RandomizedContext;
 import net.java.sen.SenTestUtil;
@@ -24,14 +25,25 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.BaseTokenStreamTestCase;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 
 
+@RunWith(com.carrotsearch.randomizedtesting.RandomizedRunner.class)
 public class TestGosenBasicFormFilter extends BaseTokenStreamTestCase {
+
+    static Random random;
+
+    @BeforeClass
+    public static void setUpBeforeClass() {
+        random = random();
+    }
+
     private Analyzer analyzer = new Analyzer() {
         @Override
         protected TokenStreamComponents createComponents(String field) {
-            Tokenizer tokenizer = new GosenTokenizer(null, SenTestUtil.IPADIC_DIR);
+            Tokenizer tokenizer = new GosenTokenizer(newAttributeFactory(), null, SenTestUtil.IPADIC_DIR, false);
             TokenStream stream = new GosenBasicFormFilter(tokenizer);
             return new TokenStreamComponents(tokenizer, stream);
         }
@@ -46,6 +58,6 @@ public class TestGosenBasicFormFilter extends BaseTokenStreamTestCase {
 
     @Test
     void testRandomStrings() throws IOException {
-        checkRandomData(RandomizedContext.current().getRandom(), analyzer, 10000);
+        checkRandomData(random(), analyzer, 10000);
     }
 }

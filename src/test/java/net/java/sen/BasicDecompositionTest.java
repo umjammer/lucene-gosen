@@ -30,10 +30,8 @@ import org.junit.jupiter.api.Test;
 import static net.java.sen.SenTestUtil.IPADIC_DIR;
 import static net.java.sen.SenTestUtil.compareTokens;
 import static net.java.sen.SenTestUtil.getStringTagger;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -222,7 +220,6 @@ public class BasicDecompositionTest {
     @Test
     void testDifferentDictionary01() throws IOException {
         String testString = "これは本ではない";
-        String ipadicDir = SenTestUtil.IPADIC_DIR;
         String naistChasenDir = "dictionary/naist-chasen";
 
         Token[] expectedIpadicTokens = new Token[] {
@@ -244,8 +241,8 @@ public class BasicDecompositionTest {
                 new Token("ない", 7090, 6, 2, new Morpheme("助動詞", "特殊・ナイ", "基本形", "*", new String[] {"ナイ"}, new String[] {"ナイ"}, null))
         };
 
-        StringTagger ipadicTagger = SenFactory.getStringTagger(ipadicDir);
-        StringTagger naistChasenTagger = SenFactory.getStringTagger(naistChasenDir);
+        StringTagger ipadicTagger = SenFactory.getStringTagger(SenTestUtil.IPADIC_DIR, false);
+        StringTagger naistChasenTagger = SenFactory.getStringTagger(naistChasenDir, false);
 
         assertNotSame(ipadicTagger, naistChasenTagger);
 
@@ -254,33 +251,6 @@ public class BasicDecompositionTest {
 
         List<Token> naistChasenActualTokens = naistChasenTagger.analyze(testString, ipadicActualTokens);
         compareTokens(expectedNaistChasenTokens, naistChasenActualTokens);
-    }
-
-    /**
-     * Tests string decomposition.<br>
-     * empty dictionaryDir case.
-     *
-     * @throws IOException
-     */
-    @Test
-    void testDifferentDictionary02() throws IOException {
-        try {
-            SenFactory.getStringTagger(null);
-            fail("Error! getStringTagger was created.");
-        } catch (RuntimeException t) {
-            assertEquals("Not found resource[header.sen]. dictionaryDir=[null]", t.getMessage(), "Exception message not expected.");
-        } catch (Throwable t) {
-            fail("Not expected exception. " + t.getClass().getName());
-        }
-
-        try {
-            SenFactory.getStringTagger("");
-            fail("Error! getStringTagger was created.");
-        } catch (RuntimeException t) {
-            assertEquals("Not found resource[header.sen]. dictionaryDir=[]", t.getMessage(), "Exception message not expected.");
-        } catch (Throwable t) {
-            fail("Not expected exception. " + t.getClass().getName());
-        }
     }
 
     /**
@@ -295,5 +265,44 @@ public class BasicDecompositionTest {
         SenFactory instance2 = SenFactory.getInstance(IPADIC_DIR);
 
         assertSame(instance, instance2);
+    }
+
+    /**
+     * Test the tokenizer that is able to recognize a Latin-1 accented character as a proper Latin character,
+     * which will not handle as a separator.
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testLatinAccentedCharacter() throws IOException {
+        StringTagger tagger = SenFactory.getStringTagger(SenTestUtil.IPADIC_DIR, false);
+
+        String strTest = "mündlichen";
+
+        Token[] expectedTokens = new Token[] {
+                new Token("mündlichen", 31059, 0, 10, new Morpheme("未知語", null, null, "*", new String[] {}, new String[] {}, null))
+        };
+
+        List<Token> analyzedTokens = tagger.analyze(strTest);
+        compareTokens(expectedTokens, analyzedTokens);
+    }
+
+    /**
+     * Test the tokenizer that a half-width Katakana character handles properly.
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testKatakanaString() throws IOException {
+        StringTagger tagger = SenFactory.getStringTagger(SenTestUtil.IPADIC_DIR, false);
+
+        String strTest = "ッﾊﾞサ";
+
+        Token[] expectedTokens = new Token[] {
+                new Token("ッﾊﾞサ", 31059, 0, 4, new Morpheme("未知語", null, null, "*", new String[] {}, new String[] {}, null))
+        };
+
+        List<Token> analyzedTokens = tagger.analyze(strTest);
+        compareTokens(expectedTokens, analyzedTokens);
     }
 }

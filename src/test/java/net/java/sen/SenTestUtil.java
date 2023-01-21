@@ -50,7 +50,7 @@ public class SenTestUtil {
     /**
      * IPADIC dictionary directory path
      */
-    public static final String IPADIC_DIR = "dictionary/ipadic";
+    public static final String IPADIC_DIR = System.getProperty("sen.home");
 
     /**
      * Returns a StringTagger for testing
@@ -59,7 +59,7 @@ public class SenTestUtil {
      */
     public static StringTagger getStringTagger() {
         if (stringTagger == null) {
-            stringTagger = SenFactory.getStringTagger(IPADIC_DIR);
+            stringTagger = SenFactory.getStringTagger(IPADIC_DIR, false);
         }
 
         stringTagger.removeFilters();
@@ -74,7 +74,7 @@ public class SenTestUtil {
      */
     public static Viterbi getViterbi() {
         if (viterbi == null) {
-            viterbi = SenFactory.getViterbi(IPADIC_DIR);
+            viterbi = SenFactory.getViterbi(IPADIC_DIR, false);
         }
 
         return viterbi;
@@ -87,7 +87,7 @@ public class SenTestUtil {
      */
     public static ReadingProcessor getReadingProcessor() {
         if (readingProcessor == null) {
-            readingProcessor = SenFactory.getReadingProcessor(IPADIC_DIR);
+            readingProcessor = SenFactory.getReadingProcessor(IPADIC_DIR, false);
         }
 
         readingProcessor.clearFilters();

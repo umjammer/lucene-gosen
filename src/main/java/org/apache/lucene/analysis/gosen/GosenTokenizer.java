@@ -17,7 +17,6 @@
 package org.apache.lucene.analysis.gosen;
 
 import java.io.IOException;
-import java.io.Reader;
 
 import net.java.sen.SenFactory;
 import net.java.sen.StringTagger;
@@ -32,9 +31,9 @@ import org.apache.lucene.analysis.gosen.tokenAttributes.PartOfSpeechAttribute;
 import org.apache.lucene.analysis.gosen.tokenAttributes.PronunciationsAttribute;
 import org.apache.lucene.analysis.gosen.tokenAttributes.ReadingsAttribute;
 import org.apache.lucene.analysis.gosen.tokenAttributes.SentenceStartAttribute;
-import org.apache.lucene.analysis.standard.StandardTokenizerImpl;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
+import org.apache.lucene.util.AttributeFactory;
 
 
 /**
@@ -54,95 +53,9 @@ import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
  */
 public final class GosenTokenizer extends Tokenizer {
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + accumulatedCost;
-        result = prime * result
-                + ((basicFormAtt == null) ? 0 : basicFormAtt.hashCode());
-        result = prime * result
-                + ((conjugationAtt == null) ? 0 : conjugationAtt.hashCode());
-        result = prime * result + ((costAtt == null) ? 0 : costAtt.hashCode());
-        result = prime * result + ((offsetAtt == null) ? 0 : offsetAtt.hashCode());
-        result = prime * result
-                + ((partOfSpeechAtt == null) ? 0 : partOfSpeechAtt.hashCode());
-        result = prime * result
-                + ((pronunciationsAtt == null) ? 0 : pronunciationsAtt.hashCode());
-        result = prime * result
-                + ((readingsAtt == null) ? 0 : readingsAtt.hashCode());
-        result = prime * result
-                + ((sentenceAtt == null) ? 0 : sentenceAtt.hashCode());
-        result = prime * result + ((tagger == null) ? 0 : tagger.hashCode());
-        result = prime * result + ((termAtt == null) ? 0 : termAtt.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        GosenTokenizer other = (GosenTokenizer) obj;
-        if (accumulatedCost != other.accumulatedCost)
-            return false;
-        if (basicFormAtt == null) {
-            if (other.basicFormAtt != null)
-                return false;
-        } else if (!basicFormAtt.equals(other.basicFormAtt))
-            return false;
-        if (conjugationAtt == null) {
-            if (other.conjugationAtt != null)
-                return false;
-        } else if (!conjugationAtt.equals(other.conjugationAtt))
-            return false;
-        if (costAtt == null) {
-            if (other.costAtt != null)
-                return false;
-        } else if (!costAtt.equals(other.costAtt))
-            return false;
-        if (offsetAtt == null) {
-            if (other.offsetAtt != null)
-                return false;
-        } else if (!offsetAtt.equals(other.offsetAtt))
-            return false;
-        if (partOfSpeechAtt == null) {
-            if (other.partOfSpeechAtt != null)
-                return false;
-        } else if (!partOfSpeechAtt.equals(other.partOfSpeechAtt))
-            return false;
-        if (pronunciationsAtt == null) {
-            if (other.pronunciationsAtt != null)
-                return false;
-        } else if (!pronunciationsAtt.equals(other.pronunciationsAtt))
-            return false;
-        if (readingsAtt == null) {
-            if (other.readingsAtt != null)
-                return false;
-        } else if (!readingsAtt.equals(other.readingsAtt))
-            return false;
-        if (sentenceAtt == null) {
-            if (other.sentenceAtt != null)
-                return false;
-        } else if (!sentenceAtt.equals(other.sentenceAtt))
-            return false;
-        if (tagger == null) {
-            if (other.tagger != null)
-                return false;
-        } else if (!tagger.equals(other.tagger))
-            return false;
-        if (termAtt == null) {
-            if (other.termAtt != null)
-                return false;
-        } else if (!termAtt.equals(other.termAtt))
-            return false;
-        return true;
-    }
-
     private final StreamTagger2 tagger;
+
+    // Term attributes
     private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
     private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
 
@@ -162,23 +75,31 @@ public final class GosenTokenizer extends Tokenizer {
     // so we accumulate this so we can then subtract to present an absolute cost.
     private int accumulatedCost = 0;
 
-    public GosenTokenizer() {
-        this(null, null);
+    // Default value for UNKNOWN Katakana tokenization
+    public static final boolean DEFAULT_UNKNOWN_KATAKANA_TOKENIZATION = false;
+
+    /**
+     * Constructors
+     */
+    public GosenTokenizer(StreamFilter filter, String dictionaryDir, boolean tokenizeUnknownKatakana) {
+        this(DEFAULT_TOKEN_ATTRIBUTE_FACTORY, filter, dictionaryDir, tokenizeUnknownKatakana);
     }
 
-    public GosenTokenizer(StreamFilter filter) {
-        this(filter, null);
-    }
-
-    public GosenTokenizer(StreamFilter filter, String dictionaryDir) {
-        StringTagger stringTagger = SenFactory.getStringTagger(dictionaryDir);
-        if (filter != null)
+    /**
+     * Create A new GosenTokenizer
+     *
+     * @param factory the AttributeFactory to use
+     * @param filter stream filter
+     * @param dictionaryDir lucene-gosen dictionary directory
+     * @param tokenizeUnknownKatakana determine whether segmenting unknown katakana or not
+     */
+    public GosenTokenizer(AttributeFactory factory, StreamFilter filter, String dictionaryDir, boolean tokenizeUnknownKatakana) {
+        super(factory);
+        StringTagger stringTagger = SenFactory.getStringTagger(dictionaryDir, tokenizeUnknownKatakana);
+        if (filter != null) {
             stringTagger.addFilter(filter);
-        tagger = new StreamTagger2(stringTagger, this::reader);
-    }
-
-    private Reader reader() {
-        return this.input;
+        }
+        tagger = new StreamTagger2(stringTagger, this.input);
     }
 
     @Override
@@ -212,9 +133,15 @@ public final class GosenTokenizer extends Tokenizer {
     }
 
     @Override
+    public void close() throws IOException {
+        super.close();
+        tagger.reset(input);
+    }
+
+    @Override
     public void reset() throws IOException {
         super.reset();
-        tagger.reset(this::reader);
+        tagger.reset(input);
         accumulatedCost = 0;
     }
 

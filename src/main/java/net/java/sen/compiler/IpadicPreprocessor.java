@@ -58,6 +58,16 @@ public class IpadicPreprocessor {
     private static final String CONNECTION_CSV_FILENAME = "connection.csv";
 
     /**
+     * Input file that defines Conjugation form
+     */
+    private static final String CONJUGATION_FORM_FILENAME = "cforms.cha";
+
+    /**
+     * Input file that defines Word Connection
+     */
+    private static final String CONNECT_FORM_FILENAME = "connect.cha";
+
+    /**
      * The charset used to read the dictionary
      */
     private String charset;
@@ -94,8 +104,7 @@ public class IpadicPreprocessor {
         BufferedWriter writer = null;
 
         try {
-            fis = new FileInputStream(this.inputDirectory + File.separator
-                    + "connect.cha");
+            fis = new FileInputStream(this.inputDirectory + File.separator + CONNECT_FORM_FILENAME);
             isr = new InputStreamReader(fis, this.charset);
             reader = new BufferedReader(isr);
             fos = new FileOutputStream(outputFilename);

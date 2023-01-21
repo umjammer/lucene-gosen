@@ -23,7 +23,6 @@ import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.function.Supplier;
 
 import net.java.sen.StringTagger;
 import net.java.sen.dictionary.Token;
@@ -45,7 +44,7 @@ public final class StreamTagger2 {
     private int offset = 0;
 
     private StringTagger tagger;
-    private Supplier<Reader> input;
+    private Reader input;
     private final BreakIterator breaker = BreakIterator.getSentenceInstance(Locale.JAPANESE); /* tokenizes a char[] of text */
     private final CharArrayIterator iterator = new CharArrayIterator();
     private List<Token> tokens = new ArrayList<>();
@@ -54,7 +53,7 @@ public final class StreamTagger2 {
     /**
      * Construct a new StreamTagger2 that breaks text into words from the given Reader.
      */
-    public StreamTagger2(StringTagger tagger, Supplier<Reader> input) {
+    public StreamTagger2(StringTagger tagger, Reader input) {
         this.tagger = tagger;
         this.input = input;
     }
@@ -79,7 +78,7 @@ public final class StreamTagger2 {
         tokens.clear();
     }
 
-    public void reset(Supplier<Reader> input) throws IOException {
+    public void reset(Reader input) throws IOException {
         this.input = input;
         reset();
     }
@@ -141,17 +140,15 @@ public final class StreamTagger2 {
         int leftover = length - usableLength;
         System.arraycopy(buffer, usableLength, buffer, 0, leftover);
         int requested = buffer.length - leftover;
-        int returned = input.get().read(buffer, leftover, requested);
+        int returned = input.read(buffer, leftover, requested);
         length = returned < 0 ? leftover : returned + leftover;
-        if (returned < requested) /* reader has been emptied, process the rest */
+        if (returned < requested) // reader has been emptied, process the rest
             usableLength = length;
-        else { /* still more data to be read, find a safe-stopping place */
+        else { // still more data to be read, find a safe-stopping place
             usableLength = findSafeEnd();
             if (usableLength < 0)
-                usableLength = length; /*
-                 * more than IOBUFFER of text without breaks,
-                 * gonna possibly truncate tokens
-                 */
+                usableLength = length; // more than IOBUFFER of text without breaks,
+                                       // gonna possibly truncate tokens
         }
 
         iterator.setText(buffer, 0, Math.max(0, usableLength));

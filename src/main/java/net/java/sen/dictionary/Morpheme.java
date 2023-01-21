@@ -281,46 +281,6 @@ public class Morpheme {
     }
 
     @Override
-    public boolean equals(Object object) {
-
-        if (object instanceof Morpheme) {
-
-            Morpheme morpheme = (Morpheme) object;
-
-            String partOfSpeech = this.getPartOfSpeech();
-            String conjugationalType = this.getConjugationalType();
-            String conjugationalForm = this.getConjugationalForm();
-            String basicForm = this.getBasicForm();
-            List<String> pronunciations = this.getPronunciations();
-            List<String> readings = this.getReadings();
-            String additionalInformation = this.getAdditionalInformation();
-
-            String otherPartOfSpeech = morpheme.getPartOfSpeech();
-            String otherConjugationalType = morpheme.getConjugationalType();
-            String otherConjugationalForm = morpheme.getConjugationalForm();
-            String otherBasicForm = morpheme.getBasicForm();
-            List<String> otherPronunciations = morpheme.getPronunciations();
-            List<String> otherReadings = morpheme.getReadings();
-            String otherAdditionalInformation = morpheme.getAdditionalInformation();
-
-            if (
-                    ((basicForm == otherBasicForm) || (basicForm != null && basicForm.equals(otherBasicForm)))
-                            && ((conjugationalType == otherConjugationalType) || (conjugationalType != null && conjugationalType.equals(otherConjugationalType)))
-                            && ((conjugationalForm == otherConjugationalForm) || (conjugationalForm != null && conjugationalForm.equals(otherConjugationalForm)))
-                            && ((partOfSpeech == otherPartOfSpeech) || (partOfSpeech != null && partOfSpeech.equals(otherPartOfSpeech)))
-                            && (stringListsEqual(pronunciations, otherPronunciations))
-                            && (stringListsEqual(readings, otherReadings))
-                            && ((additionalInformation == otherAdditionalInformation) || (additionalInformation != null && additionalInformation.equals(otherAdditionalInformation)))
-            ) {
-                return true;
-            }
-
-        }
-
-        return false;
-    }
-
-    @Override
     public String toString() {
         load(LoadState.FULL);
 
@@ -392,33 +352,4 @@ public class Morpheme {
         this.pronunciations = Collections.emptyList();
         this.loaded = LoadState.FULL;
     }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime
-                * result
-                + ((additionalInformation == null) ? 0 : additionalInformation
-                .hashCode());
-        result = prime * result + ((basicForm == null) ? 0 : basicForm.hashCode());
-        result = prime * result
-                + ((conjugationalForm == null) ? 0 : conjugationalForm.hashCode());
-        result = prime * result
-                + ((conjugationalType == null) ? 0 : conjugationalType.hashCode());
-        result = prime * result
-                + ((dictionary == null) ? 0 : dictionary.hashCode());
-        result = prime * result + ((loaded == null) ? 0 : loaded.hashCode());
-        result = prime * result
-                + ((partOfSpeech == null) ? 0 : partOfSpeech.hashCode());
-        result = prime * result + partOfSpeechIndex;
-        result = prime * result
-                + ((pronunciations == null) ? 0 : pronunciations.hashCode());
-        result = prime * result + ((readings == null) ? 0 : readings.hashCode());
-        return result;
-    }
-
 }

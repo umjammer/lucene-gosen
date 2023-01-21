@@ -131,7 +131,7 @@ public class StreamTagger {
                 if (tokens == null) {
                     tokens = new ArrayList<Token>();
                 }
-                tokens = stringTagger.analyze(new String(buffer, 0, i), tokens);
+                tokens = stringTagger.analyze(new String(buffer, 0, i), new ArrayList<>());
             } while (tokens == null);
             this.currentTokenIndex = 0;
 
@@ -171,7 +171,7 @@ public class StreamTagger {
                 if (tokens == null) {
                     tokens = new ArrayList<Token>();
                 }
-                tokens = stringTagger.analyze(new String(buffer, 0, i), tokens);
+                tokens = stringTagger.analyze(new String(buffer, 0, i), new ArrayList<>());
             } while (tokens == null || tokens.isEmpty());
             currentTokenIndex = 0;
 
