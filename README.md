@@ -11,8 +11,9 @@ mavenized lucene-gosen
 ## TODO
 
  * extract java version dictionary converter (some dictionaries are different)
- * back port unit tests to sen 
- * https://github.com/lucene-gosen/lucene-gosen/
+ * mavenize dictionary creation
+ * ~~back port unit tests to sen~~ 
+ * ~~https://github.com/lucene-gosen/lucene-gosen/~~ -> backport some code
 
 ---
 [Original](https://code.google.com/p/lucene-gosen/)
