@@ -18,6 +18,10 @@
         <file>
           <missing>dictionary/ipadic</missing>
         </file>
+        <property>
+          <name>env.JITPACK</name>
+          <value>!true</value>
+        </property>
       </activation>
       <build>
         <plugins>
@@ -50,6 +54,10 @@
         <file>
           <missing>dictionary/naist-chasen</missing>
         </file>
+        <property>
+          <name>env.JITPACK</name>
+          <value>!true</value>
+        </property>
       </activation>
       <build>
         <plugins>
